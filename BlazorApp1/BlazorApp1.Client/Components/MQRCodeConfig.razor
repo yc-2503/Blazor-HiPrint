@@ -1,0 +1,19 @@
+﻿@using BootstrapBlazor.Components
+@using PMSM.Client.WebApp.Client.Data
+<div class="div-box">
+    <form action="/submit-coordinates" method="post">
+        <input type="number" name="x-coordinate" placeholder="X Coordinate" required @bind-value="@SelectedItem.Left">
+        <input type="number" name="y-coordinate" placeholder="Y Coordinate" required @bind-value="@SelectedItem.Top">
+        <input type="text" placeholder="1" @bind-value="@SelectedItem.Text">
+        <select name="dropdown" required @bind="@SelectedItem.UnitType">
+            <option value="Text">Text</option>
+            <option value="BarCode">BarCode</option>
+            <option value="QRCode">QRCode</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+@code {
+    MTemplateUnit SelectedItem { get; set; }
+}
