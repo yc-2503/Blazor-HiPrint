@@ -12,8 +12,17 @@
         style="position: absolute; width: 100%; border-top: 1px dashed rgb(201, 190, 190); height: 7pt; top: -1pt;"></div>
         <div class="hiprint-footerLine hidefooterLinetarget" 
         style="position: absolute; width: 100%; border-top: 1px dashed rgb(201, 190, 190); height: 7pt; top: 497.764pt;"></div>
-        <span class="hiprint-paperNumber" style="position: absolute; top: 204pt; left: 565pt;">1-1</span>
+@*         <span class="hiprint-paperNumber" style="position: absolute; top: 204pt; left: 565pt;">1-1</span> *@
+        <div id="pw" style="position: absolute; width:250mm;height:174.6mm;  border: 3px solid #73AD21;"
+             @ondragenter="@HandleDragEnter" ondragover="event.preventDefault();" @ondrop="HandleDrop" @ondragstart="@TempWindDragStart">
+
+            @foreach (var todo in MyItems)
+            {
+                <MDragItem OnClicked="ItemCliecked" Temp="todo" />
+            }
+        </div>
     </div>
+
     <div class="hiprint_rul_wrapper">
         <img class="h_img" src="./images/l_img.svg">
         <img class="v_img" src="./images/v_img.svg">
@@ -33,14 +42,7 @@
     </div>
     <div>
 
-        <div id="pw" class="div-box grid-box" style="width:800px;height:400px; position: relative; border: 3px solid #73AD21;"
-             @ondragenter="@HandleDragEnter" ondragover="event.preventDefault();" @ondrop="HandleDrop" @ondragstart="@TempWindDragStart">
 
-            @foreach (var todo in MyItems)
-            {
-                <MDragItem  OnClicked="ItemCliecked" Temp="todo" />
-            }
-        </div>
 
     </div>
     <div class="div-box">

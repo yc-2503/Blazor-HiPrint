@@ -1,5 +1,6 @@
 ﻿@using BootstrapBlazor.Components
 @using PMSM.Client.WebApp.Client.Data
+@using System.Diagnostics.CodeAnalysis
 <div class="div-box">
     <form action="/submit-coordinates" method="post">
         <input type="number" name="x-coordinate" placeholder="X Coordinate" required @bind-value="@SelectedItem.Left">
@@ -15,5 +16,10 @@
 </div>
 
 @code {
-    MTemplateUnit SelectedItem { get; set; }
+    [NotNull]
+    MTemplateUnit? SelectedItem { get; set; }
+    protected override void OnInitialized()
+    {
+        SelectedItem = new MTemplateUnit() { UnitType = UnitType.QRCode};
+    }
 }
