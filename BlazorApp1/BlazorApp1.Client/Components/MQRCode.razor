@@ -1,0 +1,14 @@
+﻿@using BootstrapBlazor.Components
+@using System.Diagnostics.CodeAnalysis
+<QRCode Content="@_content"></QRCode>
+
+@code {
+    [NotNull]
+    [Parameter]
+    public object? Value { get; set; }
+    string? _content;
+    protected override void OnParametersSet()
+    {
+        _content = Value?.ToString() ?? string.Empty;
+    }
+}

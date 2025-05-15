@@ -1,0 +1,81 @@
+﻿@using BootstrapBlazor.Components
+@using PMSM.Client.WebApp.Client.Data
+@using System.Diagnostics.CodeAnalysis
+<div style="@Style" draggable="true" @onclick="@OnClick" @ondragstart="@HandleDragStart" >
+
+    @if (selectedType != null)
+    {
+
+        <DynamicComponent Type="selectedType" Parameters="parameter" />
+
+
+    }else
+    {
+
+        @Temp.Text
+    }
+</div>
+@code {
+    [NotNull]
+    [Parameter]
+    public MTemplateUnit? Temp { get; set; }
+    [Parameter]
+    public Action<MTemplateUnit>? OnClicked { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        parameter = new Dictionary<string, object>()
+        {
+            { "Value", Temp.Text }
+        };
+        await base.OnInitializedAsync();
+    }
+    string Style
+    {
+        get
+        {
+
+            //直接使用字符串连接
+            return $@"  position: absolute;
+            top: {Temp.Top}px;
+            left: {Temp.Left}px;";
+        }
+
+    }
+    
+    private Type? selectedType { get {
+        Type? _electedType;
+        switch (Temp.UnitType)
+        {
+            case UnitType.QRCode:
+                    _electedType = typeof(MQRCode);
+                break;
+            default:
+                    _electedType = null;
+                break;
+        }
+            return _electedType;
+        }
+    }
+    private Dictionary<string, object>? parameter ;
+
+    private void OnClick()
+    {
+        if (Temp != null)
+        {
+            Temp.IsSelected = true;
+        }
+        if(OnClicked != null)
+        {
+            OnClicked(Temp);
+        }
+    }
+    private void HandleDragStart(DragEventArgs args)
+    {
+        args.DataTransfer.DropEffect = "move";
+        args.DataTransfer.EffectAllowed = "move";
+        if (OnClicked != null)
+        {
+            OnClicked(Temp);
+        }
+    }
+}

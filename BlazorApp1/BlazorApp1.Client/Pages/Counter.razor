@@ -1,0 +1,191 @@
+﻿@page "/counter"
+@using BlazorApp1.Client.Components
+@using PMSM.Client.WebApp.Client.Data
+@rendermode InteractiveAuto
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+<div class="hiprint-printPaper hidroppable design" original-height="175.6" tabindex="1" style="width: 250mm; height: 174.6mm;">
+    <div class="hiprint-printPaper-content">
+        <div class="hiprint-headerLine hideheaderLinetarget" 
+        style="position: absolute; width: 100%; border-top: 1px dashed rgb(201, 190, 190); height: 7pt; top: -1pt;"></div>
+        <div class="hiprint-footerLine hidefooterLinetarget" 
+        style="position: absolute; width: 100%; border-top: 1px dashed rgb(201, 190, 190); height: 7pt; top: 497.764pt;"></div>
+        <span class="hiprint-paperNumber" style="position: absolute; top: 204pt; left: 565pt;">1-1</span>
+    </div>
+    <div class="hiprint_rul_wrapper">
+        <img class="h_img" src="./images/l_img.svg">
+        <img class="v_img" src="./images/v_img.svg">
+@*         <img class="v_img" src="/vue-plugin-hiprint/static/img/v_img.d7cff5bd.svg"> *@
+    </div>
+</div>
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<div class="container ruler-div">
+    <div class="div-box " @ondragstart="@HandleDragStart" @ondragend="@HandleDragEnd">
+        <div draggable="true">Text 1</div>
+        <div draggable="true">Text 2</div>
+        <div draggable="true">Text 3</div>
+        <div draggable="true">Text 4</div>
+        <div draggable="true">Text 5</div>
+    </div>
+    <div>
+
+        <div id="pw" class="div-box grid-box" style="width:800px;height:400px; position: relative; border: 3px solid #73AD21;"
+             @ondragenter="@HandleDragEnter" ondragover="event.preventDefault();" @ondrop="HandleDrop" @ondragstart="@TempWindDragStart">
+
+            @foreach (var todo in MyItems)
+            {
+                <MDragItem  OnClicked="ItemCliecked" Temp="todo" />
+            }
+        </div>
+
+    </div>
+    <div class="div-box">
+        <form action="/submit-coordinates" method="post">
+            <input type="number" name="x-coordinate" placeholder="X Coordinate" required  @bind-value="@SelectedItem.Left">
+            <input type="number" name="y-coordinate" placeholder="Y Coordinate" required @bind-value="@SelectedItem.Top">
+            <input type="text" placeholder="1" @bind-value="@SelectedItem.Text">
+            <select name="dropdown" required @bind="@SelectedItem.UnitType" >
+                <option value="Text">Text</option>
+                <option value="BarCode">BarCode</option>
+                <option value="QRCode">QRCode</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    MTemplateUnit m1 = new MTemplateUnit
+        {
+            Top = 10,
+            Left = 10,
+            Text = "ABC1",
+            UnitType = UnitType.QRCode
+        };
+    MTemplateUnit m2 = new MTemplateUnit
+        {
+            Top = 10,
+            Left = 10,
+            Text = "ABC2"
+        };
+    protected override async Task OnInitializedAsync()
+    {
+
+        MyItems = new List<MTemplateUnit>() { m1, m2 };
+        SelectedItem = m1;
+        await base.OnInitializedAsync();
+    }
+
+    List<MTemplateUnit> MyItems;
+    MTemplateUnit SelectedItem { get; set; }
+
+    void ItemCliecked(MTemplateUnit item)
+    {
+        SelectedItem = item;
+        StateHasChanged();
+    }
+    bool isAddNew = false;
+    bool isReadyAddNew = false;
+    // ondrop事件处理方法
+    private void HandleDrop(DragEventArgs args)
+    {
+        //...省略若干代码
+        // 刷新界面
+
+        if (isAddNew)
+        {
+            MyItems.Add(new MTemplateUnit
+                {
+                    Top = args.OffsetY,
+                    Left = args.OffsetX,
+                    Text = "ABCC",
+                    UnitType = UnitType.Text
+                });
+            isAddNew = false;
+        }
+        else
+        {
+            // 鼠标移动如果没有超过 MDragItem 的范围，offsetX Y 的值会是 MDragItem 内部的相对位置，移动会有问题，
+            // 这里是要获取鼠标移动的相对距离
+            SelectedItem.Top += args.ClientY - top;
+            SelectedItem.Left += args.ClientX - left;
+
+
+            StateHasChanged();
+        }
+
+    }
+    private void HandleDragStart(DragEventArgs args)
+    {
+        isReadyAddNew = true;
+    }
+    private void TempWindDragStart(DragEventArgs args)
+    {
+        top = args.ClientY;
+        left = args.ClientX;
+    }
+    private void HandleDragEnd(DragEventArgs args)
+    {
+        isReadyAddNew = false;
+    }
+    private void HandleDragEnter(DragEventArgs args)
+    {
+        if (isReadyAddNew)
+        {
+
+            isAddNew = true;
+            isReadyAddNew = false;
+        }
+    }
+    public double top { get; set; } = 20;
+
+    public double left { get; set; } = 20;
+
+    // private Task PrintPreviewClick() => DialogService.Show(new DialogOption()
+    //     {
+    //         IsKeyboard = false,
+    //         Title = "I am the popup created by the service",
+    //         BodyTemplate = BootstrapDynamicComponent.CreateComponent<Button>(new Dictionary<string, object?>
+    //         {
+    //             [nameof(Button.ChildContent)] = new RenderFragment(builder => builder.AddContent(0, "Button"))
+    //         }).Render()
+    //     });
+    // private Task PrintPreviewClick() => DialogService.Show(new DialogOption()
+    //     {
+    //         Title = "Built-in Counter component",
+    //         Component = BootstrapDynamicComponent.CreateComponent<Counter>()
+    //     });
+
+    async Task PrintPreviewClick()
+    {
+        // var op = new DialogOption
+        //     {
+        //         Title = "PrintsDialogTitle",
+        //         ShowPrintButton = true,
+        //         ShowPrintButtonInHeader = true,
+        //         ShowFooter = false,
+        //         BodyContext = 1,
+
+        //         Component = BootstrapDynamicComponent.CreateComponent<PrintPreview>()
+        //     };
+
+        // await DialogService.Show(op);
+
+    //     IJSObjectReference module = await JS.InvokeAsync<IJSObjectReference>("import",
+    // "./Pages/BuiltContent.razor.js");
+
+    //     await module.InvokeVoidAsync("PrintDiv", "pw");
+    }
+
+}
