@@ -2,38 +2,15 @@
 @using PMSM.Client.WebApp.Client.Data
 @using System.Diagnostics.CodeAnalysis
 <div class="div-box">
-    <form action="/submit-coordinates"  >
-        <input type="number" name="x-coordinate" placeholder="X Coordinate" required @bind-value="@Value.Left" >
-        <input type="number" name="y-coordinate" placeholder="Y Coordinate" required @bind-value="@Value.Top" @oninput="InputHandler1" >
-        <input type="text" placeholder="1" @bind-value="@Value.Text">
-        <select name="dropdown" required @bind="@Value.UnitType">
-            <option value="Text">Text</option>
-            <option value="BarCode">BarCode</option>
-            <option value="QRCode">QRCode</option>
-        </select>
-    </form>
+
+    <EditorForm Model="Value"> </EditorForm>
+    
 </div>
 
 @code {
     [NotNull]
     [Parameter]
     public MTemplateUnit? Value { get; set; }
-    protected override void OnParametersSet()
-    {
-        if(Value == null)
-        {
-            Value = new MTemplateUnit();
-        }
-        Value.UnitType = UnitType.QRCode;
-    }
-    [Parameter]
-    public EventCallback<MTemplateUnit> ValueChanged { get; set; }
 
-    private async Task InputHandler1(ChangeEventArgs e)
-    {
-        await ValueChanged.InvokeAsync(Value);
-        StateHasChanged();
-        // inputValue = e.Value.ToString();
-        // 在这里处理输入事件，例如更新组件的状态或调用其他方法
-    }
+
 }

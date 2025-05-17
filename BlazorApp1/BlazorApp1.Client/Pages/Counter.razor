@@ -1,5 +1,6 @@
 ﻿@page "/counter"
 @using BlazorApp1.Client.Components
+@using BootstrapBlazor.Components
 @using PMSM.Client.WebApp.Client.Data
 @rendermode InteractiveAuto
 
@@ -16,9 +17,9 @@
         <div id="pw" style="position: absolute; width:250mm;height:174.6mm;  border: 3px solid #73AD21;"
              @ondragenter="@HandleDragEnter" ondragover="event.preventDefault();" @ondrop="HandleDrop" @ondragstart="@TempWindDragStart">
 
-            @foreach (var todo in MyItems)
+            @foreach (var item in MyItems)
             {
-                <MDragItem OnClicked="ItemCliecked" Temp="todo" />
+                <MDragItem OnClicked="ItemCliecked" Temp="item" />
             }
         </div>
     </div>
@@ -30,7 +31,17 @@
     </div>
 </div>
 <p role="status">Current count: @currentCount</p>
-<MQRCodeConfig @bind-Value="SelectedItem"></MQRCodeConfig>
+@if(SelectedItem!=null)
+{
+    <p role="status">Current Top: @SelectedItem.Top</p>
+
+<MQRCodeConfig Value="SelectedItem"></MQRCodeConfig>
+}
+@* <BootstrapBlazor.Components.EditorForm Model="SelectedItem" ItemChangedType="ItemChangedType.Update" >
+
+</BootstrapBlazor.Components.EditorForm> *@
+<p>I am a line~~~</p>
+
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 <div class="container ruler-div">
     <div class="div-box " @ondragstart="@HandleDragStart" @ondragend="@HandleDragEnd">
@@ -61,6 +72,14 @@
 </div>
 
 @code {
+    void InputHandler(ChangeEventArgs e)
+    {
+        System.Console.WriteLine("");
+
+        // inputValue = e.Value.ToString();
+        // 在这里处理输入事件，例如更新组件的状态或调用其他方法
+    }
+
     private int currentCount = 0;
 
     private void IncrementCount()
@@ -79,10 +98,13 @@
         {
             Top = 10,
             Left = 10,
-            Text = "ABC2"
+            Text = "ABC2",
+       
         };
     protected override async Task OnInitializedAsync()
     {
+        m1.FiledHasChanged = (_, _) => StateHasChanged();
+        m2.FiledHasChanged = (_, _) => StateHasChanged();
 
         MyItems = new List<MTemplateUnit>() { m1, m2 };
         SelectedItem = m1;
@@ -90,7 +112,7 @@
     }
 
     List<MTemplateUnit> MyItems;
-    MTemplateUnit SelectedItem { get; set; }
+    MTemplateUnit SelectedItem;
 
     void ItemCliecked(MTemplateUnit item)
     {
