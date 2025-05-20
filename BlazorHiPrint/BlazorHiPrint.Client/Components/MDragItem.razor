@@ -1,33 +1,34 @@
-﻿@using BootstrapBlazor.Components
-@using PMSM.Client.WebApp.Client.Data
-@using System.Diagnostics.CodeAnalysis
+﻿@using System.Diagnostics.CodeAnalysis
+@using BlazorHiPrint.Client.Data
+@using BootstrapBlazor.Components
 <div style="@Style" draggable="true" @onclick="@OnClick" @ondragstart="@HandleDragStart" >
 
     @if (selectedType != null)
     {
-
         <DynamicComponent Type="selectedType" Parameters="parameter" />
-
 
     }else
     {
 
-        @Temp.Text
+        <div>NULL</div>
     }
 </div>
 @code {
     [NotNull]
     [Parameter]
-    public MTemplateUnit? Temp { get; set; }
+    public MTmpltBase? Temp { get; set; }
     [Parameter]
-    public Action<MTemplateUnit>? OnClicked { get; set; }
-    protected override async Task OnInitializedAsync()
+    public Action<MTmpltBase>? OnClicked { get; set; }
+    Dictionary<string, object>? parameter;
+
+    protected override void OnParametersSet()
     {
+        base.OnParametersSet();
         parameter = new Dictionary<string, object>()
         {
-            { "Value", Temp.Text }
+            { "Value", Temp }
         };
-        await base.OnInitializedAsync();
+        Temp.FiledHasChanged +=  (_, _) => StateHasChanged();
     }
     string Style
     {
@@ -41,29 +42,13 @@
         }
 
     }
-    
-    private Type? selectedType { get {
-        Type? _electedType;
-        switch (Temp.UnitType)
-        {
-            case UnitType.QRCode:
-                    _electedType = typeof(MQRCode);
-                break;
-            default:
-                    _electedType = null;
-                break;
-        }
-            return _electedType;
-        }
-    }
-    private Dictionary<string, object>? parameter ;
+
+    private Type? selectedType => PrintElementsFactory.GetPrintElementType(Temp);
+
 
     private void OnClick()
     {
-        if (Temp != null)
-        {
-            Temp.IsSelected = true;
-        }
+
         if(OnClicked != null)
         {
             OnClicked(Temp);

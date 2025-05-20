@@ -1,11 +1,20 @@
-﻿namespace PMSM.Client.WebApp.Client.Data;
+﻿using BootstrapBlazor.Components;
 
-public class MTemplateUnit
+namespace BlazorHiPrint.Client.Data;
+
+public class MTmpltBase
 {
+    public  MTmpltBase(double top, double left, Action<string, object>? filedHasChanged, UnitType unitType)
+    {
+        _top = top;
+        _left = left;
+        FiledHasChanged  = filedHasChanged;
+        UnitType = unitType;
+    }
     public Action<string, object>? FiledHasChanged;
     private double _top;
     private double _left;
-    private string _value = "QRCode";
+
     public double Top
     {
         get { return _top; }
@@ -32,22 +41,11 @@ public class MTemplateUnit
             }
         }
     }
-    public string Text
-    {
-        get { return _value; }
-        set
-        {
-            var hasChanged = _value != value;
-            if (hasChanged)
-            {
-                _value = value;
-                FiledHasChanged?.Invoke(nameof(Text), value);
-            }
-        }
-    }
-    public bool IsSelected { get; set; }
+
+
+    [AutoGenerateColumn(Ignore = true)]
     public UnitType UnitType { get; set; }
-    public object? Value { get; set; }
+
 }
 public enum UnitType
 {

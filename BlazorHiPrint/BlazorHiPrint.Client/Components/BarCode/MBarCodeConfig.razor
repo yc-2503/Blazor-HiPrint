@@ -1,0 +1,16 @@
+﻿@using System.Diagnostics.CodeAnalysis
+@using BlazorHiPrint.Client.Data
+@using BootstrapBlazor.Components
+<div class="div-box">
+
+    <EditorForm Model="Value"> </EditorForm>
+    
+</div>
+
+@code {
+    [NotNull]
+    [Parameter]
+    public MTmpltBase? Value { get; set; }
+
+
+}

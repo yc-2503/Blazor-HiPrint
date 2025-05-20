@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint", "BlazorApp1\BlazorHiPrint\BlazorHiPrint.csproj", "{CD361750-B22E-457E-83BD-13C7286DF528}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint", "BlazorHiPrint\BlazorHiPrint\BlazorHiPrint.csproj", "{CD361750-B22E-457E-83BD-13C7286DF528}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint.Client", "BlazorApp1\BlazorHiPrint.Client\BlazorHiPrint.Client.csproj", "{87147BBC-85C3-4879-BE63-57FD13E64276}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint.Client", "BlazorHiPrint\BlazorHiPrint.Client\BlazorHiPrint.Client.csproj", "{87147BBC-85C3-4879-BE63-57FD13E64276}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

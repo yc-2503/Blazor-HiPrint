@@ -73,9 +73,7 @@
   border-top: 0px dashed rgb(201, 190, 190) !important;
 }
 
-.hiprint-printPaper.design {
-  border: 1px dashed rgba(170, 170, 170, 0.7);
-}
+
 
 .design .hiprint-printElement-table-content, .design .hiprint-printElement-longText-content {
   overflow: hidden;

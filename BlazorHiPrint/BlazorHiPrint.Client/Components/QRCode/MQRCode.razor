@@ -1,0 +1,20 @@
+﻿@using BlazorHiPrint.Client.Data
+@using BootstrapBlazor.Components
+@using System.Diagnostics.CodeAnalysis
+<QRCode Content="@_data.Text"></QRCode>
+
+@code {
+    [NotNull]
+    [Parameter]
+    public object? Value{get; set;}
+    [NotNull]
+    MQRCodeTmplt? _data { get; set; }
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _data = Value as MQRCodeTmplt;
+
+    }
+
+
+}

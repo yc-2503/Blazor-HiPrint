@@ -1,0 +1,18 @@
+﻿@using BlazorHiPrint.Client.Data
+@using BootstrapBlazor.Components
+@using System.Diagnostics.CodeAnalysis
+<div >@_data.Text</div>
+
+@code {
+    [NotNull]
+    [Parameter]
+    public object? Value { get; set; }
+    [NotNull]
+    MQTextTmplt? _data { get; set; }
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _data = Value as MQTextTmplt;
+
+    }
+}
