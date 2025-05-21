@@ -20,15 +20,15 @@
     [Parameter]
     public Action<MTmpltBase>? OnClicked { get; set; }
     Dictionary<string, object>? parameter;
-
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
-        base.OnParametersSet();
         parameter = new Dictionary<string, object>()
         {
             { "Value", Temp }
         };
-        Temp.FiledHasChanged +=  (_, _) => StateHasChanged();
+        Temp.FiledHasChanged =  (_, _) => StateHasChanged();
+        selectedType = PrintElementsFactory.GetPrintElementType(Temp);
+        await base.OnParametersSetAsync();
     }
     string Style
     {
@@ -43,7 +43,7 @@
 
     }
 
-    private Type? selectedType => PrintElementsFactory.GetPrintElementType(Temp);
+    private Type? selectedType = null;
 
 
     private void OnClick()

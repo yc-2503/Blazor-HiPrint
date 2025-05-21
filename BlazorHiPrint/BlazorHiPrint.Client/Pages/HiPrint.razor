@@ -63,10 +63,7 @@
 
 </div>
 
-
-
 @code {
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -80,15 +77,22 @@
         {
                 Top = 10,
                 Left = 10,
-                FiledHasChanged = (_, _) => StateHasChanged(),
+            //    FiledHasChanged = (_, _) => StateHasChanged(),
                 UnitType = UnitType.QRCode
         });
         MTmpltBase m2 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
             {
                 Top = 10,
                 Left = 10,
-                FiledHasChanged = (_, _) => StateHasChanged(),
+            //    FiledHasChanged = (_, _) => StateHasChanged(),
                 UnitType = UnitType.Text
+        });
+        MTmpltBase m3 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
+            {
+                Top = 20,
+                Left = 20,
+            //    FiledHasChanged = (_, _) => StateHasChanged(),
+                UnitType = UnitType.BarCode
         });
 
 
@@ -96,6 +100,8 @@
         parameter["Value"] = SelectedItem;
         MyPrintItems.Add(m1);
         MyPrintItems.Add(m2);
+        MyPrintItems.Add(m3);
+
     }
     //用来区分拖拽过程是新建的还是移动
     bool isReadyAddNew = false;
@@ -146,7 +152,7 @@
                     Top = args.OffsetY,
                     Left = args.OffsetX,
                     UnitType = newType,
-                    FiledHasChanged = (_, _) => StateHasChanged(),
+                 //   FiledHasChanged = (_, _) => StateHasChanged(),
             };
             SelectedItem = PrintElementsFactory.CreateMTmplt(options);
             MyPrintItems.Add(SelectedItem);

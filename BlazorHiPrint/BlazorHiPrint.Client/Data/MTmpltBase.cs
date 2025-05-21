@@ -4,14 +4,14 @@ namespace BlazorHiPrint.Client.Data;
 
 public class MTmpltBase
 {
-    public  MTmpltBase(double top, double left, Action<string, object>? filedHasChanged, UnitType unitType)
+    public  MTmpltBase(double top, double left, Action<string, object?>? filedHasChanged, UnitType unitType)
     {
         _top = top;
         _left = left;
         FiledHasChanged  = filedHasChanged;
         UnitType = unitType;
     }
-    public Action<string, object>? FiledHasChanged;
+    public Action<string, object?>? FiledHasChanged;
     private double _top;
     private double _left;
 

@@ -1,14 +1,47 @@
-﻿@using BootstrapBlazor.Components
+﻿@using BlazorHiPrint.Client.Data
+@using BootstrapBlazor.Components
 @using System.Diagnostics.CodeAnalysis
-<QRCode Content="@_content"></QRCode>
+
+<BarcodeGenerator Value="@_data.Text" Options="Options" OnCompletedAsync="OnCompletedAsync"  ></BarcodeGenerator>
 
 @code {
     [NotNull]
     [Parameter]
     public object? Value { get; set; }
-    string? _content;
-    protected override void OnParametersSet()
+    private BarcodeGeneratorOption Options { get; set; } = new()
     {
-        _content = Value?.ToString() ?? string.Empty;
+        Format = EnumBarcodeFormat.CODE128,
+        Width = 2,
+        Height = 100,
+        Font = EnumBarcodeTextFont.Monospace,
+        FontOptions = EnumBarcodeTextFontOption.Normal,
+        FontSize = 20,
+        TextAlign = EnumBarcodeTextAlign.Center,
+        TextMargin = 2,
+        TextPosition = EnumBarcodeTextPosition.Bottom,
+        Background = "#FFFFFF",
+        LineColor = "#000000",
+        Margin = 10,
+        Flat = false,
+        DisplayValue = true
+    };
+    [NotNull]
+    MBarCodeTmplt? _data { get; set; }
+
+    protected override  async Task OnParametersSetAsync()
+    {
+        _data = Value as MBarCodeTmplt;
+
+        Options.Format = _data.Format;
+        await  base.OnParametersSetAsync();
+
     }
+    private Task OnCompletedAsync(string? val)
+    {
+        System.Console.WriteLine(_data.Text);
+        System.Console.WriteLine(val);
+       // StateHasChanged();
+        return Task.CompletedTask;
+    }
+
 }
