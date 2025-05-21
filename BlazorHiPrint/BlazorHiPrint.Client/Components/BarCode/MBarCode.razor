@@ -2,46 +2,79 @@
 @using BootstrapBlazor.Components
 @using System.Diagnostics.CodeAnalysis
 
-<BarcodeGenerator Value="@_data.Text" Options="Options" OnCompletedAsync="OnCompletedAsync"  ></BarcodeGenerator>
+@* <BarcodeGenerator Value="@_data.Text" Options="Options" OnCompletedAsync="OnCompletedAsync"  ></BarcodeGenerator> *@
+<div >
+    <a class="absolute mud-barcode-link" href="@(Clickable ? Value : null)" target="@Target">
 
+        @if (content != null)
+        {
+            var viewBoxWidth = @content.ModuleSizeX * content.Columns;
+            var viewBoxHeight = @content.ModuleSizeY * content.Rows;
+
+            <svg width="@Width" height="@Height"  viewBox="0 0 @viewBoxWidth @viewBoxHeight">
+                @for (int y = 0; y < content.Rows; y++)
+                {
+                    @for (int x = 0; x < content.Columns; x++)
+                    {
+                        @if (content[x, y])
+                        {
+                            <rect class="d-flex align-center justify-center" width="@content.ModuleSizeX" 
+                            height="@content.ModuleSizeY" style="@($"fill:{Color}; stroke-width:{StrokeWidth}px; stroke:{Color}")"
+                            x="@(x * content.ModuleSizeX)"
+                            y="@(y * content.ModuleSizeY)" />
+                        }
+                    }
+                }
+            </svg>
+        }
+
+    </a>
+</div>
 @code {
     [NotNull]
     [Parameter]
     public object? Value { get; set; }
-    private BarcodeGeneratorOption Options { get; set; } = new()
+
+
+    private string? _value;
+    BarcodeResult? content;
+    protected override async Task OnParametersSetAsync()
     {
-        Format = EnumBarcodeFormat.CODE128,
-        Width = 2,
-        Height = 100,
-        Font = EnumBarcodeTextFont.Monospace,
-        FontOptions = EnumBarcodeTextFontOption.Normal,
-        FontSize = 20,
-        TextAlign = EnumBarcodeTextAlign.Center,
-        TextMargin = 2,
-        TextPosition = EnumBarcodeTextPosition.Bottom,
-        Background = "#FFFFFF",
-        LineColor = "#000000",
-        Margin = 10,
-        Flat = false,
-        DisplayValue = true
-    };
-    [NotNull]
-    MBarCodeTmplt? _data { get; set; }
+        var tmp = Value as MBarCodeTmplt;
+        if (tmp != null)
+        {
+            var render = false;
+            if (_value != tmp.Text)
+            {
+                render = true;
+                _value = tmp.Text;
+            }
+            if (_format != tmp.Format)
+            {
+                render = true;
+                _format = tmp.Format;
+            }
+            if (render)
+            {
+                if (_format == ZXing.BarcodeFormat.CODE_128 || _format == ZXing.BarcodeFormat.CODE_93 || _format == ZXing.BarcodeFormat.CODE_39)
+                {
+                    //TODO 临时强制高度为50
+                    Height = 50;
+                    ForceHeight = Height;
+                }
+                else
+                {
+                    ForceHeight = 1;
+                }
 
-    protected override  async Task OnParametersSetAsync()
-    {
-        _data = Value as MBarCodeTmplt;
+                content = GetCode(_value);
+            }
 
-        Options.Format = _data.Format;
-        await  base.OnParametersSetAsync();
+        }
 
+        //    Options.Format = _data.Format;
+        await base.OnParametersSetAsync();
     }
-    private Task OnCompletedAsync(string? val)
-    {
-        System.Console.WriteLine(_data.Text);
-        System.Console.WriteLine(val);
-       // StateHasChanged();
-        return Task.CompletedTask;
-    }
+
 
 }

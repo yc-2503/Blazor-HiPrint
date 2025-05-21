@@ -9,7 +9,10 @@ blazor-hiprint 当时只是为了方便我（并非 hiprint 原作者） 在 Bla
 ### 代码中使用了如下，但不限于如下的开源组件
 
 - 👉 BootstrapBlazor [https://github.com/dotnetcore/BootstrapBlazor](https://github.com/dotnetcore/BootstrapBlazor)
+- 👉 ZXing.Net [https://github.com/micjahn/ZXing.Net](https://github.com/micjahn/ZXing.Net)
+
 
 ### 部分样式及资源直接使用了
 
 - 👉 vue-plugin-hiprint [https://gitee.com/CcSimple/vue-plugin-hiprint](https://gitee.com/CcSimple/vue-plugin-hiprinthttps://gitee.com/CcSimple/vue-plugin-hiprint)https://gitee.com/CcSimple/vue-plugin-hiprinthttps://gitee.com/CcSimple/vue-plugin-hiprint
+- 👉CodeBeam.MudBlazor.Extensions [https://github.com/CodeBeamOrg/CodeBeam.MudBlazor.Extensions](https://github.com/CodeBeamOrg/CodeBeam.MudBlazor.Extensions)https://github.com/CodeBeamOrg/CodeBeam.MudBlazor.Extensions

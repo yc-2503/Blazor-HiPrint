@@ -1,4 +1,5 @@
 ﻿using BootstrapBlazor.Components;
+using ZXing;
 
 namespace BlazorHiPrint.Client.Data
 {
@@ -8,7 +9,7 @@ namespace BlazorHiPrint.Client.Data
         { }
 
         private string _text = "0123456789";
-        private EnumBarcodeFormat _format = EnumBarcodeFormat.CODE128;
+        private BarcodeFormat _format = BarcodeFormat.CODE_128;
         public string Text
         {
             get { return _text; }
@@ -22,7 +23,7 @@ namespace BlazorHiPrint.Client.Data
                 }
             }
         }
-        public EnumBarcodeFormat Format
+        public BarcodeFormat Format
         {
             get { return _format; }
             set
@@ -31,7 +32,7 @@ namespace BlazorHiPrint.Client.Data
                 if (hasChanged)
                 {
                     _format = value;
-                    FiledHasChanged?.Invoke(nameof(EnumBarcodeFormat), value);
+                    FiledHasChanged?.Invoke(nameof(BarcodeFormat), value);
                 }
             }
         }
