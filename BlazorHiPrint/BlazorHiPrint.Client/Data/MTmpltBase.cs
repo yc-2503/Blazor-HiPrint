@@ -14,7 +14,7 @@ public class MTmpltBase
     public Action<string, object?>? FiledHasChanged;
     private double _top;
     private double _left;
-
+    public bool IsSelected { get; set; }
     public double Top
     {
         get { return _top; }

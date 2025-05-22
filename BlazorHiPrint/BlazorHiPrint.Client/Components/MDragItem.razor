@@ -1,7 +1,7 @@
 ﻿@using System.Diagnostics.CodeAnalysis
 @using BlazorHiPrint.Client.Data
 @using BootstrapBlazor.Components
-<div style="@Style" draggable="true" @onclick="@OnClick" @ondragstart="@HandleDragStart" >
+<div class="hiprint-printElement" style="@Style" draggable="true" @onclick="@OnClick" @onclick:stopPropagation="true" @ondragstart="@HandleDragStart">
 
     @if (selectedType != null)
     {
@@ -12,6 +12,21 @@
 
         <div>NULL</div>
     }
+    @* 这里的 selected 似乎没有什么用处 *@
+    <div panelindex="40" class="resize-panel selected" 
+    style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute;
+        background-color: rgba(0, 0, 0, 0.5); cursor: move; display: @Display;">
+        <div class="size-box" 
+        style="position: absolute; left: -2px; top: -19px;">133.5pt x 133.5pt</div>
+
+        <div class="del-btn">✕</div>
+
+        <div class="s resizebtn" 
+        style="cursor: s-resize; bottom: -12px; margin-left: -4px; left: 50%; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;"></div>
+        <div class="e resizebtn" 
+        style="cursor: e-resize; top: 50%; margin-top: -4px; right: -12px; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;"></div>
+        <div class="se resizebtn" 
+        style="cursor: se-resize; bottom: -12px; right: -12px; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;"></div></div>
 </div>
 @code {
     [NotNull]
@@ -20,6 +35,8 @@
     [Parameter]
     public Action<MTmpltBase>? OnClicked { get; set; }
     Dictionary<string, object>? parameter;
+
+    string Display { get { return Temp.IsSelected ? "block" : "none"; } }
     protected override async Task OnParametersSetAsync()
     {
         parameter = new Dictionary<string, object>()
@@ -48,12 +65,13 @@
 
     private void OnClick()
     {
-
+        Temp.IsSelected = true;   
         if(OnClicked != null)
         {
             OnClicked(Temp);
         }
     }
+
     private void HandleDragStart(DragEventArgs args)
     {
         args.DataTransfer.DropEffect = "move";
