@@ -34,14 +34,15 @@
             <div class="card border-0">
                 <div class="card-body" style="overflow-x:scroll">
                     <div class="hiprint-printTemplate">
-                        <div class="hiprint-printPaper  design" original-height="175.6" tabindex="1" style="width: 420mm; height: 295.6mm;" @onclick="PrintPaperClicked">
+                        <div class="hiprint-printPaper  design" original-height="175.6" tabindex="0" style="width: 420mm; height: 295.6mm;"
+                        @onclick="PrintPaperClicked" >
 
                             <div id="pw" style="position: absolute; width: 100%; height: 100%;  border:  solid #73AD21;"
                             ondragover="event.preventDefault();" @ondrop="HandleDrop" @ondragstart="@TempWindDragStart" @ondrag="TempWindDrag">
 
                                 @foreach (var item in MyPrintItems)
                                 {
-                                    <MDragItem OnClicked="PrintItemCliecked" Temp="item" />
+                                    <MDragItem OnClicked="PrintItemCliecked" OnDeletedEventHandler="ClearSelectedItems" Temp="item" />
                                 }
                             </div>
                             @if (showLine)
@@ -152,16 +153,22 @@
         };
         StateHasChanged();
     }
+    //打印纸空白区域被点击
     void PrintPaperClicked(MouseEventArgs args)
     {
         foreach (var pm in MyPrintItems)
         {
-                pm.IsSelected = false;
-            
+            pm.IsSelected = false;
+
         }
         SelectedItem = null;
     }
 
+    void ClearSelectedItems(MTmpltBase item)
+    {
+        MyPrintItems.Remove(item);
+        StateHasChanged();
+    }
     // ondrop事件处理方法
     private void HandleDrop(DragEventArgs args)
     {
