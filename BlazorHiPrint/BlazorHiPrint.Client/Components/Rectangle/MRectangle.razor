@@ -1,13 +1,58 @@
-﻿<div>
-    <svg>
-        <rect class="d-flex align-center justify-center" width="100px" 
-      height="120px" 
-        style="fill:none;stroke:black;stroke-width:1;opacity:1"
-      x="50"
-      y="0" />
+﻿@using BlazorHiPrint.Client.Data
+@using System.Diagnostics.CodeAnalysis
+<div  >
+    <svg width="@(_data.Width)px" height="@(_data.Height)px">
+        <rect  width="100%"  height="100%" 
+        style="fill:none;stroke:black;stroke-width:1;opacity:1" />
     </svg>
+    <div style="display: @Display;" @ondrag:stopPropagation="true" @ondragstart:stopPropagation="true">
+
+        <div class="s resizebtn"  draggable="true" @ondrag="TempWindDrag" @ondragstart="@TempWindDragStart" 
+        style="cursor: s-resize; bottom: -12px; 
+            margin-left: -4px; left: 50%; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
+        </div>
+        <div class="e resizebtn" draggable="true" @ondrag="TempWindDrag" @ondragstart="@TempWindDragStart" 
+        style="cursor: e-resize; top: 50%; 
+            margin-top: -4px; right: -12px; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
+        </div>
+        <div class="se resizebtn"  draggable="true" @ondrag="TempWindDrag" @ondragstart="@TempWindDragStart" 
+        style="cursor: se-resize; bottom: -12px; right: -12px; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
+        </div>
+
+    </div>
 </div>
 
 @code {
+    [NotNull]
+    [Parameter]
+    public object? Value{get; set;}
+    [NotNull]
+    MRectangleTmplt? _data { get; set; }
+    string Display { get { return _data.IsSelected ? "block" : "none"; } }
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _data = Value as MRectangleTmplt;
+
+    }
+    //元素拖拽过程，记录元素开始位置,用于计算鼠标移动的相对位置
+    double dragStartTop { get; set; } = 20;
+    double dratStartLeft { get; set; } = 20;
+    private void TempWindDrag(DragEventArgs args)
+    {
+        _data.Width += args.ClientX - dratStartLeft;
+        _data.Height += args.ClientY - dragStartTop;
+        dragStartTop = args.ClientY;
+        dratStartLeft = args.ClientX;
+
+        // left = args.ClientX;
+        // args.DataTransfer.EffectAllowed = "move";
+    }
+    private void TempWindDragStart(DragEventArgs args)
+    {
+        dragStartTop = args.ClientY;
+        dratStartLeft = args.ClientX;
+
+    }
 
 }

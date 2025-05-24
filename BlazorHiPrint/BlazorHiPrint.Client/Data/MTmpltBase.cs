@@ -14,6 +14,11 @@ public class MTmpltBase
     public Action<string, object?>? FieldHasChanged;
     private double _top;
     private double _left;
+    //控件类型
+    [AutoGenerateColumn(Ignore = true)]
+    public UnitType UnitType { get; set; }
+    //是否被选中
+    [AutoGenerateColumn(Ignore = true)]
     public bool IsSelected { get; set; }
     public double Top
     {
@@ -43,8 +48,7 @@ public class MTmpltBase
     }
 
 
-    [AutoGenerateColumn(Ignore = true)]
-    public UnitType UnitType { get; set; }
+
 
 }
 public enum UnitType

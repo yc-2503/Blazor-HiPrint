@@ -11,8 +11,8 @@ namespace BlazorHiPrint.Client.Data
         }
 
         //宽度属性，属性变化时，通知页面更新
-        int _width = 0;
-        public int Width
+        double _width = 40;
+        public double Width
         {
             get { return _width; }
             set
@@ -28,13 +28,13 @@ namespace BlazorHiPrint.Client.Data
         /// <summary>
         /// 存储高度的变量
         /// </summary>
-        public int _height = 0;
+        public double _height = 20;
         
         /// <summary>
         /// 获取或设置高度
         /// 当高度的值改变时，会触发FieldHasChanged事件
         /// </summary>
-        public int Height
+        public double Height
         {
             get { return _height; }
             set

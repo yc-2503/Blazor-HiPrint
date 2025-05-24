@@ -2,7 +2,8 @@
 @using BlazorHiPrint.Client.Data
 @using BootstrapBlazor.Components
 <div class="hiprint-printElement design" style="@Style" draggable="true" 
-@onclick="@OnClick" @onclick:stopPropagation="true" tabindex="0"
+@onclick="@OnClick" @onclick:stopPropagation="true" 
+tabindex="0"
 @ondragstart="@HandleDragStart" @onkeydown="PrintPaperOnKeyPressed">
 
     @if (selectedType != null)
@@ -15,18 +16,13 @@
         <div>NULL</div>
     }
     @* 这里的 selected 似乎没有什么用处 *@
-    <div panelindex="40" class="resize-panel selected" 
+    <div  class="resize-panel selected" 
     style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute;
         background-color: rgba(0, 0, 0, 0.5); cursor: move; display: @Display;">
 
-        <div class="del-btn" @onclick="OnDelBtnClick">✕</div>
+        <div class="del-btn" @onclick="OnDelBtnClick" >✕</div>
 
-        <div class="s resizebtn" 
-        style="cursor: s-resize; bottom: -12px; margin-left: -4px; left: 50%; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;"></div>
-        <div class="e resizebtn" 
-        style="cursor: e-resize; top: 50%; margin-top: -4px; right: -12px; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;"></div>
-        <div class="se resizebtn" 
-        style="cursor: se-resize; bottom: -12px; right: -12px; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;"></div></div>
+     </div>
 </div>
 @code {
     [NotNull]
@@ -101,4 +97,5 @@
             OnClicked(Temp);
         }
     }
+
 }

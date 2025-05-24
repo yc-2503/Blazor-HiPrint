@@ -38,9 +38,9 @@
                                     <MDragItem OnClicked="PrintItemCliecked" OnDeletedEventHandler="ClearSelectedItems" Temp="item" />
                                 }
                             </div>
-                            @if (showLine)
+                            @if (SelectedItem != null)
                             {
-                                <div class="toplineOfPosition" style="position: absolute; top: @(lineTop)px;width:250mm"></div>
+                                <div class="toplineOfPosition" style="position: absolute; top: @(SelectedItem.Top)px;width:250mm"></div>
                             }
 
 
@@ -77,8 +77,8 @@
     {
         MTmpltBase m1 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
         {
-                Top = 10,
-                Left = 10,
+                Top = 160,
+                Left = 80,
             //    FiledHasChanged = (_, _) => StateHasChanged(),
                 UnitType = UnitType.QRCode
         });
@@ -97,24 +97,30 @@
                 UnitType = UnitType.BarCode
         });
 
+        MTmpltBase m4 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
+            {
+                Top = 160,
+                Left = 10,
+            //    FiledHasChanged = (_, _) => StateHasChanged(),
+                UnitType = UnitType.Rectangle
+            });
 
         SelectedItem = m1;
         configParameters["Value"] = SelectedItem;
         MyPrintItems.Add(m1);
         MyPrintItems.Add(m2);
         MyPrintItems.Add(m3);
-
+        MyPrintItems.Add(m4);
     }
     //用来区分拖拽过程是新建的还是移动
     bool isReadyAddNew = false;
     //新建元素的类型
     UnitType newType;
-    //元素拖拽过程，显示边界线
-    bool showLine = false;
+
     //元素拖拽过程，记录元素开始位置,用于计算鼠标移动的相对位置
     double dragStartTop { get; set; } = 20;
     double dratStartLeft { get; set; } = 20;
-    double lineTop { get; set; } = 0;
+
     Dictionary<string, object> configParameters = new Dictionary<string, object>();
     //打印模板上的元素
     List<MTmpltBase> MyPrintItems = new List<MTmpltBase>();
@@ -175,23 +181,14 @@
                     Top = args.OffsetY,
                     Left = args.OffsetX,
                     UnitType = newType,
-                 //   FiledHasChanged = (_, _) => StateHasChanged(),
+                //   FiledHasChanged = (_, _) => StateHasChanged(),
             };
             SelectedItem = PrintElementsFactory.CreateMTmplt(options);
             MyPrintItems.Add(SelectedItem);
             isReadyAddNew = false;
         }
-        else
-        {
-            // 鼠标移动如果没有超过 MDragItem 的范围，offsetX Y 的值会是 MDragItem 内部的相对位置，移动会有问题，
-            // 这里是要获取鼠标移动的相对距离
-            SelectedItem.Top += args.ClientY - dragStartTop;
-            SelectedItem.Left += args.ClientX - dratStartLeft;
 
-
-            StateHasChanged();
-        }
-        showLine = false;
+        //这个方法要小心，内部控件的拖拽释放也会进入到这里，比如矩形框调整宽度的拖拽
 
     }
     //新增元素开始拖拽，将isReadyAddNew 设置为true，表示可以新增元素。
@@ -211,14 +208,20 @@
         dragStartTop = args.ClientY;
         dratStartLeft = args.ClientX;
         args.DataTransfer.EffectAllowed = "move";
-        showLine = true;
+
     }
     private void TempWindDrag(DragEventArgs args)
     {
         if (SelectedItem != null)
         {
 
-            lineTop = SelectedItem.Top + args.ClientY - dragStartTop;
+            // 鼠标移动如果没有超过 MDragItem 的范围，offsetX Y 的值会是 MDragItem 内部的相对位置，移动会有问题，
+            // 这里是要获取鼠标移动的相对距离
+            SelectedItem.Top += args.ClientY - dragStartTop;
+            SelectedItem.Left += args.ClientX - dratStartLeft;
+            dragStartTop = args.ClientY;
+            dratStartLeft = args.ClientX;
+
         }
         // top = args.ClientY;
         // left = args.ClientX;

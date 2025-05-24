@@ -47,7 +47,7 @@ public static class PrintElementsFactory
                 _selectedType = typeof(MTextConfig);
                 break;
             case UnitType.Rectangle:
-                _selectedType = typeof(MRectangle);
+                _selectedType = typeof(MRectangleConfig);
                 break;
             default:
                 _selectedType = null;
