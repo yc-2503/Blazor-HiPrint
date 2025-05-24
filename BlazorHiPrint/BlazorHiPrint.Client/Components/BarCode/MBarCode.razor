@@ -4,7 +4,7 @@
 
 @* <BarcodeGenerator Value="@_data.Text" Options="Options" OnCompletedAsync="OnCompletedAsync"  ></BarcodeGenerator> *@
 <div >
-    <a class="absolute mud-barcode-link" href="@(Clickable ? Value : null)" target="@Target">
+    <a  href="@(Clickable ? Value : null)" target="@Target">
 
         @if (content != null)
         {

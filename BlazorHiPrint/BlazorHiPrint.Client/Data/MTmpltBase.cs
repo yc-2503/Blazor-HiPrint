@@ -8,10 +8,10 @@ public class MTmpltBase
     {
         _top = top;
         _left = left;
-        FiledHasChanged  = filedHasChanged;
+        FieldHasChanged  = filedHasChanged;
         UnitType = unitType;
     }
-    public Action<string, object?>? FiledHasChanged;
+    public Action<string, object?>? FieldHasChanged;
     private double _top;
     private double _left;
     public bool IsSelected { get; set; }
@@ -24,7 +24,7 @@ public class MTmpltBase
             if (hasChanged)
             {
                 _top = value;
-                FiledHasChanged?.Invoke(nameof(Top), value);
+                FieldHasChanged?.Invoke(nameof(Top), value);
             }
         }
     }
@@ -37,7 +37,7 @@ public class MTmpltBase
             if (hasChanged)
             {
                 _left = value;
-                FiledHasChanged?.Invoke(nameof(Left), value);
+                FieldHasChanged?.Invoke(nameof(Left), value);
             }
         }
     }
@@ -51,5 +51,10 @@ public enum UnitType
 {
     Text,
     BarCode,
-    QRCode
+    QRCode,
+    Rectangle,
+    Line,
+    Circle,
+    Image
+
 }

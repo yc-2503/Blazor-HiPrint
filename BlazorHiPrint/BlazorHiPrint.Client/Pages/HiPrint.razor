@@ -6,15 +6,7 @@
 @rendermode InteractiveAuto
 
 <PageTitle>HiPrint</PageTitle>
-@* <div>
-    <svg>
-        <rect class="d-flex align-center justify-center" width="100px" 
-      height="120px" 
-        style="fill:none;stroke:black;stroke-width:1;opacity:1"
-      x="50"
-      y="0" />
-    </svg>
-</div> *@
+
 <div class="container-fluid" >
     <div class="row">
         <div class="col-sm-3" style="border: 1px solid #73AD21;">
@@ -23,6 +15,7 @@
                     <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.QRCode)">QRCode</div>
                     <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.BarCode)">BarCode</div>
                     <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.Text)">Text</div>
+                    <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.Rectangle)">Rectangle</div>
                     <div draggable="true">Line</div>
                     <div draggable="true">Circle</div>
                 </div>

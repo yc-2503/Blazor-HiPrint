@@ -15,7 +15,7 @@
                 if (hasChanged)
                 {
                     _text = value;
-                    FiledHasChanged?.Invoke(nameof(Text), value);
+                    FieldHasChanged?.Invoke(nameof(Text), value);
                 }
             }
         }

@@ -19,7 +19,7 @@ namespace BlazorHiPrint.Client.Data
                 if (hasChanged)
                 {
                     _text = value;
-                    FiledHasChanged?.Invoke(nameof(Text), value);
+                    FieldHasChanged?.Invoke(nameof(Text), value);
                 }
             }
         }
@@ -32,7 +32,7 @@ namespace BlazorHiPrint.Client.Data
                 if (hasChanged)
                 {
                     _format = value;
-                    FiledHasChanged?.Invoke(nameof(BarcodeFormat), value);
+                    FieldHasChanged?.Invoke(nameof(BarcodeFormat), value);
                 }
             }
         }

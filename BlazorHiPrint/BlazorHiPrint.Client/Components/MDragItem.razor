@@ -45,7 +45,7 @@
         {
             { "Value", Temp }
         };
-        Temp.FiledHasChanged =  (_, _) => StateHasChanged();
+        Temp.FieldHasChanged =  (_, _) => StateHasChanged();
         selectedType = PrintElementsFactory.GetPrintElementType(Temp);
         await base.OnParametersSetAsync();
     }
