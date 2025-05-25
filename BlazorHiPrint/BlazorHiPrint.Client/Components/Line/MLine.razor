@@ -1,0 +1,100 @@
+@using BlazorHiPrint.Client.Data
+@using System.Diagnostics.CodeAnalysis
+<div>
+    <svg width="@(_data.SvgWidth)px" height="@(_data.SvgHeight)px">
+        <line x1="10" y1="10" 
+              x2="@(10 + _data.EndX)" y2="@(10 + _data.EndY)" 
+              stroke="@_data.StrokeColor" 
+              stroke-width="@_data.StrokeWidth" />
+    </svg>
+    <div style="display: @Display;" @ondrag:stopPropagation="true" @ondragstart:stopPropagation="true">
+
+        <!-- 起点控制点 -->
+        <div class="start-point resizebtn" draggable="true" @ondrag="StartPointDrag" @ondragstart="@StartPointDragStart" 
+        style="cursor: move; top: 6px; left: 6px; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
+        </div>
+        
+        <!-- 终点控制点 -->
+        <div class="end-point resizebtn" draggable="true" @ondrag="EndPointDrag" @ondragstart="@EndPointDragStart" 
+        style="cursor: move; top: @(6 + _data.EndY)px; left: @(6 + _data.EndX)px; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
+        </div>
+
+        <!-- 中点控制点（用于整体移动线条） -->
+        <div class="mid-point resizebtn" draggable="true" @ondrag="MidPointDrag" @ondragstart="@MidPointDragStart" 
+        style="cursor: move; top: @(6 + _data.EndY / 2)px; left: @(6 + _data.EndX / 2)px; position: absolute; width: 8px; height: 8px; background: rgb(0, 150, 255); border-radius: 50%;">
+        </div>
+
+    </div>
+</div>
+
+@code {
+    [NotNull]
+    [Parameter]
+    public object? Value { get; set; }
+    [NotNull]
+    MLineTmplt? _data { get; set; }
+    string Display { get { return _data.IsSelected ? "block" : "none"; } }
+    
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _data = Value as MLineTmplt;
+    }
+
+    //拖拽过程记录开始位置
+    double dragStartX { get; set; } = 0;
+    double dragStartY { get; set; } = 0;
+
+    // 起点拖拽 - 改变线条的起始位置（实际上是改变整个线条的位置）
+    private void StartPointDrag(DragEventArgs args)
+    {
+        // 这里可以实现起点拖拽逻辑，暂时留空
+        // 由于线条起点固定在(10,10)，这个拖拽主要用于移动整个线条
+    }
+    
+    private void StartPointDragStart(DragEventArgs args)
+    {
+        dragStartX = args.ClientX;
+        dragStartY = args.ClientY;
+    }
+
+    // 终点拖拽 - 改变线条长度和角度
+    private void EndPointDrag(DragEventArgs args)
+    {
+        double deltaX = args.ClientX - dragStartX;
+        double deltaY = args.ClientY - dragStartY;
+        
+        // 计算新的终点位置
+        double newEndX = _data.EndX + deltaX;
+        double newEndY = _data.EndY + deltaY;
+        
+        // 计算新的长度和角度
+        double newLength = Math.Sqrt(newEndX * newEndX + newEndY * newEndY);
+        double newAngle = Math.Atan2(newEndY, newEndX) * 180 / Math.PI;
+        
+        _data.Length = Math.Max(10, newLength); // 最小长度为10
+        _data.Angle = newAngle;
+        
+        dragStartX = args.ClientX;
+        dragStartY = args.ClientY;
+    }
+    
+    private void EndPointDragStart(DragEventArgs args)
+    {
+        dragStartX = args.ClientX;
+        dragStartY = args.ClientY;
+    }
+
+    // 中点拖拽 - 整体移动线条（保持长度和角度不变）
+    private void MidPointDrag(DragEventArgs args)
+    {
+        // 这里可以实现中点拖拽逻辑，用于移动整个线条
+        // 暂时留空，因为移动整个元素通常由父组件处理
+    }
+    
+    private void MidPointDragStart(DragEventArgs args)
+    {
+        dragStartX = args.ClientX;
+        dragStartY = args.ClientY;
+    }
+}

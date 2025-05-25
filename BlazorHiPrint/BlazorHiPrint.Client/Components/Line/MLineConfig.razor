@@ -1,0 +1,23 @@
+@using System.Diagnostics.CodeAnalysis
+@using BlazorHiPrint.Client.Data
+@using BootstrapBlazor.Components
+<div class="div-box">
+
+    <EditorForm Model="_data"> </EditorForm>
+    
+</div>
+
+@code {
+    [NotNull]
+    [Parameter]
+    public MTmpltBase? Value { get; set; }
+
+    [NotNull]
+    MLineTmplt? _data { get; set; }   
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _data = Value as MLineTmplt;
+
+    }
+}

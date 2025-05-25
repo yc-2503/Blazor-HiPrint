@@ -1,4 +1,6 @@
 ﻿using BlazorHiPrint.Client.Components.BarCode;
+using BlazorHiPrint.Client.Components.Circle;
+using BlazorHiPrint.Client.Components.Line;
 using BlazorHiPrint.Client.Components.QRCode;
 using BlazorHiPrint.Client.Components.Rectangle;
 using BlazorHiPrint.Client.Components.Text;
@@ -25,6 +27,12 @@ public static class PrintElementsFactory
             case UnitType.Rectangle:
                 _selectedType = typeof(MRectangle);
                 break;
+            case UnitType.Line:
+                _selectedType = typeof(MLine);
+                break;
+            case UnitType.Circle:
+                _selectedType = typeof(MCircle);
+                break;
             default:
                 _selectedType = null;
                 break;
@@ -49,6 +57,12 @@ public static class PrintElementsFactory
             case UnitType.Rectangle:
                 _selectedType = typeof(MRectangleConfig);
                 break;
+            case UnitType.Line:
+                _selectedType = typeof(MLineConfig);
+                break;
+            case UnitType.Circle:
+                _selectedType = typeof(MCircleConfig);
+                break;
             default:
                 _selectedType = null;
                 break;
@@ -68,6 +82,10 @@ public static class PrintElementsFactory
                 return new MQTextTmplt(options.Top, options.Left, options.FieldHasChanged);
             case UnitType.Rectangle:
                 return new MRectangleTmplt(options.Top, options.Left, options.FieldHasChanged);
+            case UnitType.Line:
+                return new MLineTmplt(options.Top, options.Left, options.FieldHasChanged);
+            case UnitType.Circle:
+                return new MCircleTmplt(options.Top, options.Left, options.FieldHasChanged);
             default:
                 throw new ApplicationException("控件类型未实现");
         }
