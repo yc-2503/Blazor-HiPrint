@@ -12,8 +12,8 @@ public class MTmpltBase
         UnitType = unitType;
     }
     public Action<string, object?>? FieldHasChanged;
-    private double _top;
-    private double _left;
+    protected double _top;
+    protected double _left;
     //控件类型
     [AutoGenerateColumn(Ignore = true)]
     public UnitType UnitType { get; set; }

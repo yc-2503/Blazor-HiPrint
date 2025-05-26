@@ -1,4 +1,4 @@
-using System.Security.Cryptography.X509Certificates;
+using BootstrapBlazor.Components;
 
 namespace BlazorHiPrint.Client.Data
 {
@@ -6,9 +6,11 @@ namespace BlazorHiPrint.Client.Data
     {
         public MLineTmplt(double top, double left, Action<string, object?>? fieldHasChanged) : base(top, left, fieldHasChanged, UnitType.Line)
         {
-
+            //_centerY = top + Length / 2 * Math.Sin(Angle * Math.PI / 180);
+            //_centerX = left + Length / 2 * Math.Cos(Angle * Math.PI / 180);
         }
-
+        //double _centerX = 0;
+        //double _centerY = 0;
         //线条长度属性，属性变化时，通知页面更新
         double _length = 100;
         public double Length
@@ -33,7 +35,13 @@ namespace BlazorHiPrint.Client.Data
             {
                 if (_angle != value)
                 {
+                    double x1 = SvgWidth;
+                    double y1 = SvgHeight;
                     _angle = value;
+                    double dx = SvgWidth - x1;
+                    double dy = SvgHeight - y1;
+                    _top = _top - dy/2;
+                    _left = _left - dx/2;
                     FieldHasChanged?.Invoke(nameof(Angle), value);
                 }
             }
@@ -68,17 +76,24 @@ namespace BlazorHiPrint.Client.Data
                 }
             }
         }
+        [AutoGenerateColumn(Ignore = true)]
+        // 计算线条起点的X坐标
+        public double StartX => (SvgWidth/2) - Length / 2 * Math.Cos(Angle * Math.PI / 180);
+        [AutoGenerateColumn(Ignore = true)]
+        // 计算线条起点的Y坐标
+        public double StartY => (SvgHeight/2) - Length / 2 * Math.Sin(Angle * Math.PI / 180);
 
+        [AutoGenerateColumn(Ignore = true)]
         // 计算线条终点的X坐标
-        public double EndX => Length * Math.Cos(Angle * Math.PI / 180);
-        
+        public double EndX => (SvgWidth / 2) + Length/2 * Math.Cos(Angle * Math.PI / 180);
+        [AutoGenerateColumn(Ignore = true)]
         // 计算线条终点的Y坐标
-        public double EndY => Length * Math.Sin(Angle * Math.PI / 180);
-
+        public double EndY => (SvgHeight / 2) + Length/2 * Math.Sin(Angle * Math.PI / 180);
+        [AutoGenerateColumn(Ignore = true)]
         // 计算SVG容器的宽度（需要包含线条的完整范围）
-        public double SvgWidth => Math.Max(Math.Abs(EndX), 20) + 20;
-        
+        public double SvgWidth => Math.Abs(Length * Math.Cos(Angle * Math.PI / 180));
+        [AutoGenerateColumn(Ignore = true)]
         // 计算SVG容器的高度（需要包含线条的完整范围）
-        public double SvgHeight => Math.Max(Math.Abs(EndY), 20) + 20;
+        public double SvgHeight => Math.Abs(Length * Math.Sin(Angle * Math.PI / 180))+ _strokeWidth;
     }
 }

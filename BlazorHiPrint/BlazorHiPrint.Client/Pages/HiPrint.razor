@@ -104,13 +104,21 @@
             //    FiledHasChanged = (_, _) => StateHasChanged(),
                 UnitType = UnitType.Rectangle
             });
-
+        MTmpltBase m5 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
+            {
+                Top = 180,
+                Left = 30,
+            //    FiledHasChanged = (_, _) => StateHasChanged(),
+                UnitType = UnitType.Line
+            });
         SelectedItem = m1;
         configParameters["Value"] = SelectedItem;
         MyPrintItems.Add(m1);
         MyPrintItems.Add(m2);
         MyPrintItems.Add(m3);
         MyPrintItems.Add(m4);
+        MyPrintItems.Add(m5);
+
     }
     //用来区分拖拽过程是新建的还是移动
     bool isReadyAddNew = false;
