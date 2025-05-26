@@ -75,6 +75,7 @@
     }
     void InitDemo()
     {
+        MyPrintItems.Clear();
         MTmpltBase m1 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
         {
                 Top = 160,
@@ -127,7 +128,7 @@
 
     //元素拖拽过程，记录元素开始位置,用于计算鼠标移动的相对位置
     double dragStartTop { get; set; } = 20;
-    double dratStartLeft { get; set; } = 20;
+    double dragStartLeft { get; set; } = 20;
 
     Dictionary<string, object> configParameters = new Dictionary<string, object>();
     //打印模板上的元素
@@ -214,22 +215,31 @@
     private void TempWindDragStart(DragEventArgs args)
     {
         dragStartTop = args.ClientY;
-        dratStartLeft = args.ClientX;
-        args.DataTransfer.EffectAllowed = "move";
+        dragStartLeft = args.ClientX;
 
     }
     private void TempWindDrag(DragEventArgs args)
     {
         if (SelectedItem != null)
         {
-
+            if(args.ClientX<=0 || args.ClientY<=0)
+            {
+                return;
+            }
+            double dy = args.ClientY - dragStartTop;
+            double dx = args.ClientX - dragStartLeft;
+            if(Math.Abs(dx)< 2.2 && Math.Abs(dy)<2)
+            {
+                return;
+            }
             // 鼠标移动如果没有超过 MDragItem 的范围，offsetX Y 的值会是 MDragItem 内部的相对位置，移动会有问题，
             // 这里是要获取鼠标移动的相对距离
-            SelectedItem.Top += args.ClientY - dragStartTop;
-            SelectedItem.Left += args.ClientX - dratStartLeft;
+            SelectedItem.Top += dy;
+            SelectedItem.Left += dx;
+            //SelectedItem.MoveTo(SelectedItem.Left+dx,SelectedItem.Top+dy);
+ 
+            dragStartLeft = args.ClientX;
             dragStartTop = args.ClientY;
-            dratStartLeft = args.ClientX;
-
         }
         // top = args.ClientY;
         // left = args.ClientX;

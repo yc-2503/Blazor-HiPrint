@@ -22,7 +22,7 @@ tabindex="0"
 
         <div class="del-btn" @onclick="OnDelBtnClick" >✕</div>
 
-     </div>
+    </div>
 </div>
 @code {
     [NotNull]
@@ -35,15 +35,23 @@ tabindex="0"
     Dictionary<string, object>? parameter;
 
     string Display { get { return Temp.IsSelected ? "block" : "none"; } }
+    
+    //避免改动一个控件的时候，渲染整个画布
+    bool _shouldRender = false;
+    protected override bool ShouldRender()
+    {
+        return _shouldRender;
+    }
     protected override async Task OnParametersSetAsync()
     {
         parameter = new Dictionary<string, object>()
         {
             { "Value", Temp }
         };
-        Temp.FieldHasChanged =  (_, _) => StateHasChanged();
+        Temp.FieldHasChanged = (_, _) => { _shouldRender = true; StateHasChanged(); };
         selectedType = PrintElementsFactory.GetPrintElementType(Temp);
         await base.OnParametersSetAsync();
+        _shouldRender = false;
     }
     string Style
     {

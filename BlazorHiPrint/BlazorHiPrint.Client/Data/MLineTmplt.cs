@@ -40,8 +40,17 @@ namespace BlazorHiPrint.Client.Data
                     _angle = value;
                     double dx = SvgWidth - x1;
                     double dy = SvgHeight - y1;
+                    
                     _top = _top - dy/2;
                     _left = _left - dx/2;
+                    if(_top < 0)
+                    {
+                        _top = 0;
+                    }
+                    if(_left < 0)
+                    {
+                        _left = 0;
+                    }
                     FieldHasChanged?.Invoke(nameof(Angle), value);
                 }
             }

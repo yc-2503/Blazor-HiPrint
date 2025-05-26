@@ -14,12 +14,20 @@ public class MTmpltBase
     public Action<string, object?>? FieldHasChanged;
     protected double _top;
     protected double _left;
+    protected bool _isSelected;
     //控件类型
     [AutoGenerateColumn(Ignore = true)]
     public UnitType UnitType { get; set; }
     //是否被选中
     [AutoGenerateColumn(Ignore = true)]
-    public bool IsSelected { get; set; }
+    public bool IsSelected { get { return _isSelected; } set {
+            var hasChanged = _isSelected != value;
+            if (hasChanged)
+            {
+                _isSelected = value;
+                FieldHasChanged?.Invoke(nameof(IsSelected), value);
+            }
+        } }
     public double Top
     {
         get { return _top; }
@@ -46,7 +54,6 @@ public class MTmpltBase
             }
         }
     }
-
 
 
 

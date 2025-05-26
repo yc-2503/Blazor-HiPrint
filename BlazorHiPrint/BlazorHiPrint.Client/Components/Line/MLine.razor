@@ -10,17 +10,17 @@
     <div style="display: @Display;" @ondrag:stopPropagation="true" @ondragstart:stopPropagation="true">
 
         <!-- 起点控制点 -->
-        <div class="start-point resizebtn" draggable="true" @ondrag="StartPointDrag" @ondragstart="@StartPointDragStart"
-             style="cursor: move; position: absolute;  top: 50%; left: -12px;  position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
+        <div class="start-point resizebtn" draggable="true" @ondrag="StartPointDrag" @ondragstart="@PointDragStart"
+             style="cursor:  e-resize; position: absolute;  top: 50%; left: -12px;  position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
         </div>
 
         <!-- 终点控制点 -->
-        <div class="end-point resizebtn" draggable="true" @ondrag="EndPointDrag" @ondragstart="@EndPointDragStart"
-             style="cursor: move; position: absolute;  top: 50%; ;left: 100%; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
+        <div class="end-point resizebtn" draggable="true" @ondrag="EndPointDrag" @ondragstart="@PointDragStart"
+             style="cursor:  e-resize;  position: absolute;  top: 50%; ;left: 100%; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
         </div>
 
         <!-- 中点控制点（用于整体移动线条） -->
-        <div class="mid-point resizebtn" draggable="true"  @ondrag="RoationPointDrag" @ondragstart="StartRoationDragStart"
+        <div class="mid-point resizebtn" draggable="true" @ondrag="RoationPointDrag" @ondragstart="PointDragStart"
         style="cursor:url('data:image /png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABvUExURUdwTP///9XV1R0dHf///3Nzc////////////////1ZWVq+vr/T09PX19QQEBP///////8XFxf///////////wYGBv///+jo6P///4aGhqioqMzMzP///2BgYP///////////zExMf///wAAAP///xLps0AAAAAjdFJOUwCxxOdixRDmzSDMv8/Z+tz5wWpXWPk3zALCv8KnyXZVMNuNPnv3CwAAAJ1JREFUKM/NkckOwyAMRFkDBMhC9qWr+//fWCIV1WlzrjoXS36yxmMT8hdqqKoUvRAjMtw22kvecem1GjTuK1vApmI+wQMBbQFy5li+QQRaX4AtRX+vbntAJeRl9HTTx4TiwESs61DXNUPmVQeujzVrQwh43TTxpeRBslVfMUhbiXKWyiAwvnIsMcdyJkfJYdpNvG/ltDm+bjP+8KFP8ggL+zQLGxwAAAAASUVORK5CYII') 14 14,
  alias; top: -16px; margin-left: -4px; left: 50%; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
         </div>
@@ -52,22 +52,18 @@
         double k = Math.Atan2((args.ClientY - dragStartY), (args.ClientX - dragStartX));
 
         _data.Angle = k/Math.PI*180;
-        Console.WriteLine(_data.Angle);
+
     }
 
-    private void StartRoationDragStart(DragEventArgs args)
-    {
-        dragStartX = args.ClientX;
-        dragStartY = args.ClientY;
-    }
+
     // 起点拖拽 - 改变线条的起始位置（实际上是改变整个线条的位置）
     private void StartPointDrag(DragEventArgs args)
     {
         // 这里可以实现起点拖拽逻辑，暂时留空
         // 由于线条起点固定在(10,10)，这个拖拽主要用于移动整个线条
     }
-    
-    private void StartPointDragStart(DragEventArgs args)
+
+    private void PointDragStart(DragEventArgs args)
     {
         dragStartX = args.ClientX;
         dragStartY = args.ClientY;
@@ -77,35 +73,19 @@
     private void EndPointDrag(DragEventArgs args)
     {
         double deltaX = args.ClientX - dragStartX;
-        double deltaY = args.ClientY - dragStartY;
-        
+     //   double deltaY = args.ClientY - dragStartY;
+
         // 计算新的终点位置
-        double newEndX = _data.EndX + deltaX;
-        double newEndY = _data.EndY + deltaY;
-        
-        // 计算新的长度和角度
-        double newLength = Math.Sqrt(newEndX * newEndX + newEndY * newEndY);
-        double newAngle = Math.Atan2(newEndY, newEndX) * 180 / Math.PI;
-        
-        _data.Length = Math.Max(10, newLength); // 最小长度为10
-        _data.Angle = newAngle;
+        //   double newEndX = _data.EndX + deltaX;
+        //double newEndY = _data.EndY + deltaY;
+        double newWith = _data.SvgWidth + deltaX;
+        _data.Length = newWith / Math.Cos(_data.Angle*Math.PI/180);
+
         
         dragStartX = args.ClientX;
-        dragStartY = args.ClientY;
+      //  dragStartY = args.ClientY;
     }
     
-    private void EndPointDragStart(DragEventArgs args)
-    {
-        dragStartX = args.ClientX;
-        dragStartY = args.ClientY;
-    }
-
-    // 中点拖拽 - 整体移动线条（保持长度和角度不变）
-    private void MidPointDrag(DragEventArgs args)
-    {
-        // 这里可以实现中点拖拽逻辑，用于移动整个线条
-        // 暂时留空，因为移动整个元素通常由父组件处理
-    }
     
     private void MidPointDragStart(DragEventArgs args)
     {
