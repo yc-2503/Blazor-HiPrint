@@ -1,0 +1,14 @@
+﻿/*::deep tr {
+    height: 5em;
+    border: 1px solid black;
+}
+
+::deep td {
+    height: 5em;
+    border: 1px solid black;
+}
+
+::deep table {
+    border: 1px solid black;
+}
+*/
