@@ -12,7 +12,6 @@
         <div class="col-sm-3" style="border: 1px solid #73AD21;">
             <div class="container ruler-div">
                 <div class="div-box " @ondragend="@HandleDragEnd">
-                    <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.QRCode)">QRCode</div>
                     <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.BarCode)">BarCode</div>
                     <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.Text)">Text</div>
                     <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.Rectangle)">Rectangle</div>
@@ -76,13 +75,7 @@
     void InitDemo()
     {
         MyPrintItems.Clear();
-        MTmpltBase m1 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
-        {
-                Top = 160,
-                Left = 80,
-            //    FiledHasChanged = (_, _) => StateHasChanged(),
-                UnitType = UnitType.QRCode
-        });
+
         MTmpltBase m2 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
             {
                 Top = 10,
@@ -112,9 +105,9 @@
             //    FiledHasChanged = (_, _) => StateHasChanged(),
                 UnitType = UnitType.Line
             });
-        SelectedItem = m1;
+        SelectedItem = m2;
         configParameters["Value"] = SelectedItem;
-        MyPrintItems.Add(m1);
+
         MyPrintItems.Add(m2);
         MyPrintItems.Add(m3);
         MyPrintItems.Add(m4);

@@ -1,7 +1,6 @@
 ﻿using BlazorHiPrint.Client.Components.BarCode;
 using BlazorHiPrint.Client.Components.Circle;
 using BlazorHiPrint.Client.Components.Line;
-using BlazorHiPrint.Client.Components.QRCode;
 using BlazorHiPrint.Client.Components.Rectangle;
 using BlazorHiPrint.Client.Components.Text;
 using BlazorHiPrint.Client.Data;
@@ -15,9 +14,6 @@ public static class PrintElementsFactory
         Type? _selectedType;
         switch (templateUnit.UnitType)
         {
-            case UnitType.QRCode:
-                _selectedType = typeof(MQRCode);
-                break;
             case UnitType.BarCode:
                 _selectedType = typeof(MBarCode);
                 break;
@@ -45,9 +41,7 @@ public static class PrintElementsFactory
         Type? _selectedType = null;
         switch (templateUnit.UnitType)
         {
-            case UnitType.QRCode:
-                _selectedType = typeof(MQRCodeConfig);
-                break;
+
             case UnitType.BarCode:
                 _selectedType = typeof(MBarCodeConfig);
                 break;
@@ -76,8 +70,6 @@ public static class PrintElementsFactory
         {
             case UnitType.BarCode:
                 return new MBarCodeTmplt(options.Top, options.Left, options.FieldHasChanged);
-            case UnitType.QRCode:
-                return new MQRCodeTmplt(options.Top, options.Left, options.FieldHasChanged);
             case UnitType.Text:
                 return new MQTextTmplt(options.Top, options.Left, options.FieldHasChanged);
             case UnitType.Rectangle:

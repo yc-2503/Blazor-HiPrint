@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BootstrapBlazor.BarCode" Version="9.0.1" />
+    <PackageReference Include="BootstrapBlazor" Version="9.6.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.5" />
     <PackageReference Include="ZXing.Net" Version="0.16.10" />
   </ItemGroup>

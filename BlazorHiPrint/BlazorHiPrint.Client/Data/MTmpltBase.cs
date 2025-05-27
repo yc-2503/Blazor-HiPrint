@@ -62,7 +62,6 @@ public enum UnitType
 {
     Text,
     BarCode,
-    QRCode,
     Rectangle,
     Line,
     Circle,
