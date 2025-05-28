@@ -1,0 +1,48 @@
+﻿@using System.Diagnostics.CodeAnalysis
+@using BlazorHiPrint.Client.Data
+@using Microsoft.AspNetCore.Components.QuickGrid
+<div>
+
+    <QuickGrid Items="items">
+        @foreach (var cl in _data.Columns)
+        {
+            if (cl.Visible)
+            {
+                <PropertyColumn Property="@(p => GetValue(p,cl.PropertyName))" Title="@(cl.DisplayName)" Sortable="true" />
+            }
+        }
+
+    </QuickGrid>
+</div>
+
+@code {
+    [NotNull]
+    [Parameter]
+    public object? Value { get; set; }
+    [NotNull]
+    MTableTmplt? _data { get; set; }
+    [NotNull]
+    IQueryable<object> items;
+
+    string Display { get { return _data.IsSelected ? "block" : "none"; } }
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _data = Value as MTableTmplt;
+        items = _data.Items.AsQueryable();
+
+    }
+    public object? GetValue(object obj, string propertyName)
+    {
+        var prpt = _data.TModel.GetProperty(propertyName);
+        if (prpt == null)
+        {
+            return string.Empty;
+        }
+        else
+        {
+
+            return prpt.GetValue(obj, null);
+        }
+    }
+}

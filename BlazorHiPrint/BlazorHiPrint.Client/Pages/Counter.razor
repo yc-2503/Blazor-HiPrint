@@ -24,11 +24,7 @@
         <PropertyColumn Property="@(p =>  GetValue(p,"PromotionDate") )" Sortable="true" />
     </QuickGrid>
 </div>
-<div>
-    <Table TItem="Person" Items="people" AutoGenerateColumns="true">
 
-    </Table>
-</div>
 @code {
     //这里很明显可以看出来BootstrapBlazor 封装的Table 虽然强大，但是加载的速度有点慢
     private int currentCount = 0;
@@ -45,7 +41,7 @@
     }
     //https://aspnet.github.io/quickgridsamples/sample
 
-    private IQueryable<Person> people = new[]
+    private IQueryable<object> people = new[]
     {
         new Person(10895, "Jean Martin", new DateOnly(1985, 3, 16)),
         new Person(10944, "António Langa", new DateOnly(1991, 12, 1)),

@@ -65,6 +65,7 @@ public enum UnitType
     Rectangle,
     Line,
     Circle,
-    Image
+    Image,
+    Table,
 
 }

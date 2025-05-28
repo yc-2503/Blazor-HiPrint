@@ -5,8 +5,14 @@ namespace BlazorHiPrint.Client.Data
 {
     public class MBarCodeTmplt:  MTmpltBase
     {
-        public MBarCodeTmplt(double top, double left,Action<string, object>? filedHasChanged) : base(top, left,filedHasChanged, UnitType.BarCode)
-        { }
+        public MBarCodeTmplt(double top, double left, string? text, Action<string, object>? filedHasChanged) : base(top, left, filedHasChanged, UnitType.BarCode)
+        {
+            if (text != null)
+            {
+
+                _text = text;
+            }
+        }
 
         private string _text = "0123456789";
         private BarcodeFormat _format = BarcodeFormat.CODE_128;
