@@ -19,4 +19,8 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BlazorHiPrint.DesignPaper\BlazorHiPrint.DesignPaper.csproj" />
+  </ItemGroup>
+
 </Project>

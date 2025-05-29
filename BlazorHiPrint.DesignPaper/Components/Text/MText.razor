@@ -1,0 +1,16 @@
+@using BlazorHiprint.DesignPaper.Data
+@namespace BlazorHiprint.DesignPaper.Components.Text
+@inherits MElementBase<MTextTmplt>
+
+@{
+    var style = $"font-size: {Data?.FontSize}px; " +
+               $"color: {Data?.FontColor}; " +
+               $"font-weight: {(Data?.IsBold == true ? "bold" : "normal")}; " +
+               $"font-style: {(Data?.IsItalic == true ? "italic" : "normal")}; " +
+               $"text-decoration: {(Data?.IsUnderline == true ? "underline" : "none")}; " +
+               $"text-align: {Data?.TextAlign};";
+}
+
+<div style="@style">
+    @Data?.Text
+</div>

@@ -1,0 +1,17 @@
+@using BlazorHiprint.DesignPaper.Components
+@using BlazorHiprint.DesignPaper.Data
+@inherits MElementBase<MLineTmplt>
+
+<div style="@Style">
+    <svg width="@(Data?.Width)px" height="@(Data?.Height)px">
+        <line x1="0" y1="0" x2="100%" y2="100%"
+              stroke="@Data?.StrokeColor"
+              stroke-width="@(Data?.StrokeWidth)px"/>
+    </svg>
+</div>
+
+@code {
+    string Style => $@"position: absolute;
+            top: {Data?.Top}px;
+            left: {Data?.Left}px;";
+}

@@ -1,0 +1,75 @@
+@using BlazorHiPrint.DesignPaper.Components.BarCode
+@using BlazorHiprint.DesignPaper.Components
+@using BlazorHiprint.DesignPaper.Data
+
+@inherits MElementBase<MBarCodeTmplt>
+
+<div>
+    <a href="@(Clickable ? Value : null)" target="@Target">
+
+        @if (content != null)
+        {
+            var viewBoxWidth = @content.ModuleSizeX * content.Columns;
+            var viewBoxHeight = @content.ModuleSizeY * content.Rows;
+
+            <svg width="@Width" height="@Height" viewBox="0 0 @viewBoxWidth @viewBoxHeight">
+                @for (int y = 0; y < content.Rows; y++)
+                {
+                    @for (int x = 0; x < content.Columns; x++)
+                    {
+                        @if (content[x, y])
+                        {
+                            <rect class="d-flex align-center justify-center" width="@content.ModuleSizeX"
+                                  height="@content.ModuleSizeY" style="@($"fill:{Color}; stroke-width:{StrokeWidth}px; stroke:{Color}")"
+                                  x="@(x * content.ModuleSizeX)"
+                                  y="@(y * content.ModuleSizeY)" />
+                        }
+                    }
+                }
+            </svg>
+        }
+
+    </a>
+</div>
+
+@code {
+    private string? _value;
+    BarcodeResult? content;
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (Data != null)
+        {
+            var render = false;
+            if (_value != Data.Text)
+            {
+                render = true;
+                _value = Data.Text;
+            }
+            if (_format != Data.Format)
+            {
+                render = true;
+                _format = Data.Format;
+            }
+            if (render)
+            {
+                if (_format == ZXing.BarcodeFormat.CODE_128 || _format == ZXing.BarcodeFormat.CODE_93 || _format == ZXing.BarcodeFormat.CODE_39)
+                {
+                    //TODO 临时强制高度为50
+                    Height = 50;
+                    ForceHeight = Height;
+                }
+                else
+                {
+                    ForceHeight = 1;
+                }
+
+                content = GetCode(_value);
+            }
+
+        }
+
+        //    Options.Format = _data.Format;
+
+    }
+}

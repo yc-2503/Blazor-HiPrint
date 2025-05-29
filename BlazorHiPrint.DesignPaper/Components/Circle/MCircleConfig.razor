@@ -1,0 +1,28 @@
+@using BlazorHiprint.DesignPaper.Components
+@using BlazorHiprint.DesignPaper.Data
+@inherits MElementBase<MCircleTmplt>
+
+<div class="form-group">
+    <label>Width</label>
+    <input type="number" class="form-control" @bind="Data.Width" />
+</div>
+<div class="form-group">
+    <label>Height</label>
+    <input type="number" class="form-control" @bind="Data.Height" />
+</div>
+<div class="form-group">
+    <label>Fill Color</label>
+    <input type="color" class="form-control" @bind="Data.FillColor" />
+</div>
+<div class="form-group">
+    <label>Stroke Color</label>
+    <input type="color" class="form-control" @bind="Data.StrokeColor" />
+</div>
+<div class="form-group">
+    <label>Stroke Width</label>
+    <input type="number" class="form-control" @bind="Data.StrokeWidth" />
+</div>
+
+@code {
+
+}

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint", "BlazorHiPr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint.Client", "BlazorHiPrint\BlazorHiPrint.Client\BlazorHiPrint.Client.csproj", "{87147BBC-85C3-4879-BE63-57FD13E64276}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint.DesignPaper", "BlazorHiPrint.DesignPaper\BlazorHiPrint.DesignPaper.csproj", "{2758120A-6523-4304-AE2A-4ADF97B8E87C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{87147BBC-85C3-4879-BE63-57FD13E64276}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87147BBC-85C3-4879-BE63-57FD13E64276}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87147BBC-85C3-4879-BE63-57FD13E64276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2758120A-6523-4304-AE2A-4ADF97B8E87C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2758120A-6523-4304-AE2A-4ADF97B8E87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2758120A-6523-4304-AE2A-4ADF97B8E87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2758120A-6523-4304-AE2A-4ADF97B8E87C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,20 +1,19 @@
-﻿using BlazorHiPrint.Client.Data;
+using BlazorHiprint.DesignPaper.Data;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
 
-namespace BlazorHiPrint.Client.Components;
+namespace BlazorHiprint.DesignPaper.Components;
 
 public class MElementBase<TTmplt>: ComponentBase where TTmplt : class
 {
     [NotNull]
     [Parameter]
-    public MTmpltBase? Value { get; set; }
+    public object? Value { get; set; }
     [NotNull]
     protected TTmplt? Data { get; set; }
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
         Data = Value as TTmplt;
-
     }
 }

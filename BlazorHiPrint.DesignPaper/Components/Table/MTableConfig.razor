@@ -1,0 +1,24 @@
+@using BlazorHiprint.DesignPaper.Data
+@namespace BlazorHiprint.DesignPaper.Components.Table
+@inherits MElementBase<MTableTmplt>
+
+<div class="form-group">
+    <label>Rows</label>
+    <input type="number" class="form-control" @bind="Data.RowCount" />
+</div>
+<div class="form-group">
+    <label>Columns</label>
+    <input type="number" class="form-control" @bind="Data.ColumnCount" />
+</div>
+<div class="form-group">
+    <label>Row Height</label>
+    <input type="number" class="form-control" @bind="Data.RowHeight" />
+</div>
+<div class="form-group">
+    <label>Column Width</label>
+    <input type="number" class="form-control" @bind="Data.ColumnWidth" />
+</div>
+
+@code {
+
+}

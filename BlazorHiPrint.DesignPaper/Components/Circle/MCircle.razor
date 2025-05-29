@@ -1,0 +1,19 @@
+@using BlazorHiprint.DesignPaper.Components
+@using BlazorHiprint.DesignPaper.Data
+@inherits MElementBase<MCircleTmplt>
+
+<div style="@Style">
+    <svg width="@(Data?.Width+4)px" height="@(Data?.Height+4)px">
+        <circle cx="@((Data?.Width+4)/2)" cy="@((Data?.Height+4)/2)" 
+                r="@(Math.Min(Data?.Width ?? 0, Data?.Height ?? 0)/2)" 
+                fill="@Data?.FillColor" 
+                stroke="@Data?.StrokeColor" 
+                stroke-width="@(Data?.StrokeWidth)px"/>
+    </svg>
+</div>
+
+@code {
+    string Style => $@"position: absolute;
+            top: {Data?.Top}px;
+            left: {Data?.Left}px;";
+}

@@ -1,0 +1,13 @@
+@using BlazorHiprint.DesignPaper.Components
+@using BlazorHiprint.DesignPaper.Data
+@inherits MElementBase<MImageTmplt>
+
+<div style="@Style">
+    <img src="@Data?.Src" width="@(Data?.Width)px" height="@(Data?.Height)px"/>
+</div>
+
+@code {
+    string Style => $@"position: absolute;
+            top: {Data?.Top}px;
+            left: {Data?.Left}px;";
+}
