@@ -1,7 +1,8 @@
 ﻿@using BlazorHiPrint.Client.Data
 @using System.Diagnostics.CodeAnalysis
+@inherits MElementBase<MRectangleTmplt>
 <div  >
-    <svg width="@(_data.Width)px" height="@(_data.Height)px">
+    <svg width="@(Data.Width)px" height="@(Data.Height)px">
         <rect  width="100%"  height="100%" 
         style="fill:none;stroke:black;stroke-width:1;opacity:1" />
     </svg>
@@ -23,25 +24,16 @@
 </div>
 
 @code {
-    [NotNull]
-    [Parameter]
-    public object? Value{get; set;}
-    [NotNull]
-    MRectangleTmplt? _data { get; set; }
-    string Display { get { return _data.IsSelected ? "block" : "none"; } }
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-        _data = Value as MRectangleTmplt;
 
-    }
+    string Display { get { return Data.IsSelected ? "block" : "none"; } }
+
     //元素拖拽过程，记录元素开始位置,用于计算鼠标移动的相对位置
     double dragStartTop { get; set; } = 20;
     double dratStartLeft { get; set; } = 20;
     private void TempWindDrag(DragEventArgs args)
     {
-        _data.Width += args.ClientX - dratStartLeft;
-        _data.Height += args.ClientY - dragStartTop;
+        Data.Width += args.ClientX - dratStartLeft;
+        Data.Height += args.ClientY - dragStartTop;
         dragStartTop = args.ClientY;
         dratStartLeft = args.ClientX;
 

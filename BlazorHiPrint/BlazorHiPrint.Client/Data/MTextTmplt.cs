@@ -2,9 +2,9 @@
 {
     public class MTextTmplt:  MTmpltBase
     {
-        public MTextTmplt(double top,double left,string? text, Action<string, object?>? filedHasChanged) : base(top, left, filedHasChanged, UnitType.Text)
+        public MTextTmplt(double top,double left, Action<string, object?>? filedHasChanged) : base(top, left, filedHasChanged, UnitType.Text)
         {
-            _text = text ?? "Text";
+
         }
         private string _text = string.Empty ;
 

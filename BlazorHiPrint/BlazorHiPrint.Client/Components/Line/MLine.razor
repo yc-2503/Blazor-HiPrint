@@ -1,11 +1,12 @@
 @using BlazorHiPrint.Client.Data
 @using System.Diagnostics.CodeAnalysis
+@inherits MElementBase<MLineTmplt>
 <div>
-    <svg width="@(_data.SvgWidth)px" height="@(_data.SvgHeight)px">
-        <line x1="@_data.StartX" y1="@_data.StartY" 
-        x2="@(_data.EndX)" y2="@(_data.EndY)" 
-        stroke="@_data.StrokeColor" 
-        stroke-width="@_data.StrokeWidth" />
+    <svg width="@(Data.SvgWidth)px" height="@(Data.SvgHeight)px">
+        <line x1="@Data.StartX" y1="@Data.StartY" 
+        x2="@(Data.EndX)" y2="@(Data.EndY)" 
+        stroke="@Data.StrokeColor" 
+        stroke-width="@Data.StrokeWidth" />
     </svg>
     <div style="display: @Display;" @ondrag:stopPropagation="true" @ondragstart:stopPropagation="true">
 
@@ -29,18 +30,9 @@
 </div>
 
 @code {
-    [NotNull]
-    [Parameter]
-    public object? Value { get; set; }
-    [NotNull]
-    MLineTmplt? _data { get; set; }
-    string Display { get { return _data.IsSelected ? "block" : "none"; } }
 
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-        _data = Value as MLineTmplt;
-    }
+    string Display { get { return Data.IsSelected ? "block" : "none"; } }
+
 
     //拖拽过程记录开始位置
     double dragStartX { get; set; } = 0;
@@ -51,7 +43,7 @@
         // 由于线条起点固定在(10,10)，这个拖拽主要用于移动整个线条
         double k = Math.Atan2((args.ClientY - dragStartY), (args.ClientX - dragStartX));
 
-        _data.Angle = k/Math.PI*180;
+        Data.Angle = k/Math.PI*180;
 
     }
 
@@ -65,9 +57,9 @@
         // 计算新的终点位置
         //   double newEndX = _data.EndX + deltaX;
         //double newEndY = _data.EndY + deltaY;
-        double newWith = _data.SvgWidth - deltaX;
-        _data.Length = newWith / Math.Cos(_data.Angle * Math.PI / 180);
-        _data.Left += deltaX;
+        double newWith = Data.SvgWidth - deltaX;
+        Data.Length = newWith / Math.Cos(Data.Angle * Math.PI / 180);
+        Data.Left += deltaX;
 
         dragStartX = args.ClientX;
     }
@@ -87,8 +79,8 @@
         // 计算新的终点位置
         //   double newEndX = _data.EndX + deltaX;
         //double newEndY = _data.EndY + deltaY;
-        double newWith = _data.SvgWidth + deltaX;
-        _data.Length = newWith / Math.Cos(_data.Angle*Math.PI/180);
+        double newWith = Data.SvgWidth + deltaX;
+        Data.Length = newWith / Math.Cos(Data.Angle*Math.PI/180);
 
         
         dragStartX = args.ClientX;

@@ -1,7 +1,7 @@
 ﻿@using BlazorHiPrint.Client.Data
 @using BootstrapBlazor.Components
 @using System.Diagnostics.CodeAnalysis
-
+@inherits MElementBase<MBarCodeTmplt>
 @* <BarcodeGenerator Value="@_data.Text" Options="Options" OnCompletedAsync="OnCompletedAsync"  ></BarcodeGenerator> *@
 <div >
     <a  href="@(Clickable ? Value : null)" target="@Target">
@@ -31,28 +31,24 @@
     </a>
 </div>
 @code {
-    [NotNull]
-    [Parameter]
-    public object? Value { get; set; }
-
 
     private string? _value;
     BarcodeResult? content;
-    protected override async Task OnParametersSetAsync()
+    protected override void OnParametersSet()
     {
-        var tmp = Value as MBarCodeTmplt;
-        if (tmp != null)
+        base.OnParametersSet();
+        if (Data != null)
         {
             var render = false;
-            if (_value != tmp.Text)
+            if (_value != Data.Text)
             {
                 render = true;
-                _value = tmp.Text;
+                _value = Data.Text;
             }
-            if (_format != tmp.Format)
+            if (_format != Data.Format)
             {
                 render = true;
-                _format = tmp.Format;
+                _format = Data.Format;
             }
             if (render)
             {
@@ -73,7 +69,7 @@
         }
 
         //    Options.Format = _data.Format;
-        await base.OnParametersSetAsync();
+
     }
 
 

@@ -1,6 +1,4 @@
-﻿using System.Net.NetworkInformation;
-
-namespace BlazorHiPrint.Client.Data;
+﻿namespace BlazorHiPrint.Client.Data;
 
 /// <summary>
 /// 表格打印模板类，用于定义打印模板中的表格元素
@@ -14,10 +12,12 @@ public class MTableTmplt : MTmpltBase
     /// <param name="left">表格左侧位置</param>
     /// <param name="filedHasChanged">字段变更回调函数</param>
     public MTableTmplt(double top, double left, Action<string, object?>? filedHasChanged) : base(top, left, filedHasChanged, UnitType.Table)
-    { }
-    private Type _tmodel; // 表格数据模型类型
-    private IEnumerable<object> _items; // 表格数据项集合
-    private IEnumerable<MTableColumn> _columns; // 表格列定义集合
+    {
+        
+    }
+    private Type? _tmodel; // 表格数据模型类型
+    private IEnumerable<object> _items = new List<object>(); // 表格数据项集合
+    private IEnumerable<MTableColumn> _columns = new[] { new MTableColumn("A") ,new MTableColumn("B") , new MTableColumn("C") }; // 表格列定义集合
     /// <summary>
     /// 获取或设置表格数据项集合
     /// </summary>
@@ -37,7 +37,7 @@ public class MTableTmplt : MTmpltBase
     /// <summary>
     /// 获取或设置表格数据模型类型
     /// </summary>
-    public Type TModel
+    public Type? TModel
     {
         get { return _tmodel; }
         set

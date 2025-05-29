@@ -1,8 +1,9 @@
 @using BlazorHiPrint.Client.Data
-@using System.Diagnostics.CodeAnalysis
+
+@inherits MElementBase<MCircleTmplt>
 <div>
-    <svg width="@(_data.Diameter+4)px" height="@(_data.Diameter+4)px">
-        <circle cx="@((_data.Diameter+4)/2)px" cy="@((_data.Diameter+4)/2)px" r="@(_data.Diameter/2)px" 
+    <svg width="@(Data.Diameter+4)px" height="@(Data.Diameter+4)px">
+        <circle cx="@((Data.Diameter+4)/2)px" cy="@((Data.Diameter+4)/2)px" r="@(Data.Diameter/2)px" 
                 style="fill:none;stroke:black;stroke-width:1;opacity:1" />
     </svg>
     <div style="display: @Display;" @ondrag:stopPropagation="true" @ondragstart:stopPropagation="true">
@@ -21,27 +22,16 @@
 </div>
 
 @code {
-    [NotNull]
-    [Parameter]
-    public object? Value { get; set; }
-    
-    [NotNull]
-    MCircleTmplt? _data { get; set; }
-    
-    string Display { get { return _data.IsSelected ? "block" : "none"; } }
 
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-        _data = Value as MCircleTmplt;
-    }
+    
+    string Display { get { return Data.IsSelected ? "block" : "none"; } }
 
     double dragStartTop { get; set; } = 20;
     double dratStartLeft { get; set; } = 20;
 
     private void TempWindDrag(DragEventArgs args)
     {
-        _data.Radius += (args.ClientX - dratStartLeft) / 2;
+        Data.Radius += (args.ClientX - dratStartLeft) / 2;
         dragStartTop = args.ClientY;
         dratStartLeft = args.ClientX;
     }

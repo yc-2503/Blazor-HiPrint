@@ -83,9 +83,9 @@ public static class PrintElementsFactory
         switch (options.UnitType)
         {
             case UnitType.BarCode:
-                return new MBarCodeTmplt(options.Top, options.Left,options.Value as string, options.FieldHasChanged);
+                return new MBarCodeTmplt(options.Top, options.Left, options.FieldHasChanged);
             case UnitType.Text:
-                return new MTextTmplt(options.Top, options.Left, options.Value as string, options.FieldHasChanged);
+                return new MTextTmplt(options.Top, options.Left, options.FieldHasChanged);
             case UnitType.Rectangle:
                 return new MRectangleTmplt(options.Top, options.Left, options.FieldHasChanged);
             case UnitType.Line:

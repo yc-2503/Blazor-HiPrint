@@ -1,10 +1,11 @@
 ﻿@using System.Diagnostics.CodeAnalysis
 @using BlazorHiPrint.Client.Data
 @using Microsoft.AspNetCore.Components.QuickGrid
+@inherits MElementBase<MTableTmplt>
 <div>
 
     <QuickGrid Items="items">
-        @foreach (var cl in _data.Columns)
+        @foreach (var cl in Data.Columns)
         {
             if (cl.Visible)
             {
@@ -16,25 +17,24 @@
 </div>
 
 @code {
-    [NotNull]
-    [Parameter]
-    public object? Value { get; set; }
-    [NotNull]
-    MTableTmplt? _data { get; set; }
+
     [NotNull]
     IQueryable<object> items;
 
-    string Display { get { return _data.IsSelected ? "block" : "none"; } }
+    string Display { get { return Data.IsSelected ? "block" : "none"; } }
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        _data = Value as MTableTmplt;
-        items = _data.Items.AsQueryable();
+        items = Data.Items.AsQueryable();
 
     }
     public object? GetValue(object obj, string propertyName)
     {
-        var prpt = _data.TModel.GetProperty(propertyName);
+        if(Data.TModel == null)
+        {
+            return string.Empty;
+        }
+        var prpt = Data.TModel.GetProperty(propertyName);
         if (prpt == null)
         {
             return string.Empty;
