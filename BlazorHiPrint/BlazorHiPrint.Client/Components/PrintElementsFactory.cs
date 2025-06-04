@@ -95,7 +95,7 @@ public static class PrintElementsFactory
             case UnitType.Image:
                 return new MImageTmplt(options.Top, options.Left, options.FieldHasChanged);
             case UnitType.Table:
-                return new MTableTmplt(options.Top, options.Left, options.FieldHasChanged);
+                return new BlazorHiPrint.Client.Data.MTableTmplt(options.Top, options.Left, options.FieldHasChanged);
             default:
                 throw new ApplicationException("控件类型未实现");
         }

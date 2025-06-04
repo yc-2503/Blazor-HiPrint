@@ -1,0 +1,52 @@
+﻿@using BlazorHiprint.DesignPaper.Components
+@using BlazorHiprint.DesignPaper.Data
+<div class="paper-size-controls mb-3">
+    <select class="form-select" @bind="CurrentPaperSizeKey">
+        <option value="A3">A3 (297 × 420mm)</option>
+        <option value="A4">A4 (210 × 297mm)</option>
+        <option value="A5">A5 (148 × 210mm)</option>
+        <option value="B3">B3 (353 × 500mm)</option>
+        <option value="B4">B4 (250 × 353mm)</option>
+        <option value="B5">B5 (176 × 250mm)</option>
+    </select>
+</div>
+<div class="card border-0">
+    <div class="card-body" style="overflow-x:scroll">
+        <div class="hiprint-printTemplate">
+            <div class="hiprint-printPaper design" original-height="175.6" tabindex="0" style="width: @($"{CurrentPaperSize.Width}mm"); height: @($"{CurrentPaperSize.Height}mm");"
+            @onclick="PrintPaperClicked" >
+
+                <div id="pw" style="position: absolute; width: 100%; height: 100%;  border:  solid #73AD21;"
+                ondragover="event.preventDefault();"  @ondragstart="@TempWindDragStart" @ondrag="TempWindDrag">
+
+                    @foreach (var item in renderElements)
+                    {
+                        <div class="hiprint-printElement design" style="position: absolute; top: @(item.MCmpntConfig.Top)px; left: @(item.MCmpntConfig.Left)px;" draggable="true"
+                             @onclick="()=>PrintItemCliecked(item.MCmpntConfig)" @onclick:stopPropagation="true"  tabindex="0"
+                             @ondragstart="()=>PrintItemCliecked(item.MCmpntConfig)" @onkeydown="(arg)=>PrintPaperOnKeyPressed(arg,item.MCmpntConfig)">
+    
+                            @item.Fragment(item.MCmpntConfig)
+                            <div class="resize-panel selected"
+                            style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute;
+                                 background-color: rgba(0, 0, 0, 0.5); cursor: move; display: @(item.MCmpntConfig.IsSelected? "block" : "none");">
+
+                                <div class="del-btn" @onclick="()=>ClearSelectedItems(item.MCmpntConfig)">✕</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (SelectedItem != null)
+                {
+                    <div class="toplineOfPosition" style="position: absolute; top: @(SelectedItem.Top)px;width:250mm"></div>
+                }
+
+
+                <div class="hiprint_rul_wrapper">
+                                <img class="h_img" src="./images/l_img.svg">
+                                <img class="v_img" src="./images/v_img.svg">
+                                @*         <img class="v_img" src="/vue-plugin-hiprint/static/img/v_img.d7cff5bd.svg"> *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,16 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace BlazorHiprint.DesignPaper.Components;
 
-public class MElementBase<TTmplt>: ComponentBase where TTmplt : class
+public class MElementBase<TTmplt>: ComponentBase where TTmplt : MComponentCfgBase
 {
+
     [NotNull]
     [Parameter]
-    public object? Value { get; set; }
-    [NotNull]
-    protected TTmplt? Data { get; set; }
-    protected override void OnParametersSet()
+    public TTmplt? Data { get; set; }
+    bool _shouldRender = false;
+    protected override bool ShouldRender()
     {
-        base.OnParametersSet();
-        Data = Value as TTmplt;
+        return _shouldRender;
     }
 }

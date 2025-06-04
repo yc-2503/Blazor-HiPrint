@@ -1,8 +1,6 @@
 using BlazorHiprint.DesignPaper.Data;
 
-namespace BlazorHiprint.DesignPaper.Data;
-
-public class MTableTmplt : MTmpltBase
+public class MTableTmplt : MComponentCfgBase
 {
     public int RowCount { get; set; } = 3;
     public int ColumnCount { get; set; } = 3;

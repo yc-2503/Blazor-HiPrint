@@ -11,7 +11,7 @@ namespace BlazorHiprint.DesignPaper.Components;
 
 public static class PrintElementsFactory
 {
-    public static Type? GetPrintElementType(MTmpltBase templateUnit)
+    public static Type? GetPrintElementType(MComponentCfgBase templateUnit)
     {
         Type? _selectedType;
         switch (templateUnit.UnitType)
@@ -44,7 +44,7 @@ public static class PrintElementsFactory
         return _selectedType;
     }
 
-    public static Type? GetPrintElementConfigureType(MTmpltBase templateUnit)
+    public static Type? GetPrintElementConfigureType(MComponentCfgBase templateUnit)
     {
         Type? _selectedType = null;
         switch (templateUnit.UnitType)
@@ -77,16 +77,14 @@ public static class PrintElementsFactory
 
         return _selectedType;
     }
-    public static MTmpltBase CreateMTmplt(CreateMTmpltOptions options)
+    public static MComponentCfgBase CreateMTmplt(CreateMTmpltOptions options)
     {
         switch (options.UnitType)
         {
             case UnitType.BarCode:
                 return new MBarCodeTmplt(options.Top, options.Left, options.FieldHasChanged);
             case UnitType.Text:
-                return new MTextTmplt(options.Top, options.Left, options.FieldHasChanged) {
-                    Text = options.Value?.ToString() ?? string.Empty
-                };
+                return new MTextTmplt(options.Top, options.Left, options.FieldHasChanged);
             case UnitType.Rectangle:
                 return new MRectangleTmplt(options.Top, options.Left, options.FieldHasChanged);
             case UnitType.Line:

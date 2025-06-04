@@ -2,7 +2,7 @@
 @using BlazorHiprint.DesignPaper.Data
 @inherits MElementBase<MCircleTmplt>
 
-<div style="@Style">
+<div >
     <svg width="@(Data?.Width+4)px" height="@(Data?.Height+4)px">
         <circle cx="@((Data?.Width+4)/2)" cy="@((Data?.Height+4)/2)" 
                 r="@(Math.Min(Data?.Width ?? 0, Data?.Height ?? 0)/2)" 
@@ -10,10 +10,40 @@
                 stroke="@Data?.StrokeColor" 
                 stroke-width="@(Data?.StrokeWidth)px"/>
     </svg>
+    <div style="display: @Display;" @ondrag:stopPropagation="true" @ondragstart:stopPropagation="true">
+        <div class="resizebtn" draggable="true" @ondrag="TempWindDrag" @ondragstart="@TempWindDragStart"
+             style="cursor: s-resize; bottom: -12px;
+                    margin-left: -4px; left: 50%; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
+        </div>
+        <div class="resizebtn" draggable="true" @ondrag="TempWindDrag" @ondragstart="@TempWindDragStart"
+             style="cursor: e-resize; top: 50%;
+                    margin-top: -4px; right: -12px; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
+        </div>
+        <div class="resizebtn" draggable="true" @ondrag="TempWindDrag" @ondragstart="@TempWindDragStart"
+             style="cursor: se-resize; bottom: -12px; right: -12px; position: absolute; width: 8px; height: 8px; background: rgb(255, 102, 0); border-radius: 50%;">
+        </div>
+    </div>
 </div>
 
 @code {
-    string Style => $@"position: absolute;
-            top: {Data?.Top}px;
-            left: {Data?.Left}px;";
+
+
+    string Display { get { return Data.IsSelected ? "block" : "none"; } }
+
+    double dragStartTop { get; set; } = 20;
+    double dratStartLeft { get; set; } = 20;
+
+    private void TempWindDrag(DragEventArgs args)
+    {
+        Data.Width += args.ClientX - dratStartLeft;
+        Data.Height += args.ClientY - dragStartTop;
+        dragStartTop = args.ClientY;
+        dratStartLeft = args.ClientX;
+    }
+
+    private void TempWindDragStart(DragEventArgs args)
+    {
+        dragStartTop = args.ClientY;
+        dratStartLeft = args.ClientX;
+    }
 }
