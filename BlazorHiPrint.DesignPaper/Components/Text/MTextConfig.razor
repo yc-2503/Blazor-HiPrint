@@ -29,14 +29,3 @@
     <label>Text Color</label>
     <input type="color" class="form-control" @bind="Data.Color" />
 </div>
-
-@code {
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-        if (Data != null)
-        {
-            Data.FieldHasChanged = (name, value) => StateHasChanged();
-        }
-    }
-}

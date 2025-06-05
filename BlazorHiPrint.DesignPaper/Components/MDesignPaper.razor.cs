@@ -1,5 +1,4 @@
-﻿using BlazorHiprint.DesignPaper.Components;
-using BlazorHiprint.DesignPaper.Data;
+﻿using BlazorHiprint.DesignPaper.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
@@ -9,6 +8,26 @@ namespace BlazorHiPrint.DesignPaper.Components;
 
 public partial class MDesignPaper
 {
+    //组件被点击
+    [Parameter]
+    public Action<MComponentCfgBase>? OnComponentClicked { get; set; }
+    //组件被删除
+    [Parameter]
+    public Action<MComponentCfgBase>? OnComponentDeleted { get; set; }
+    //需要显示的组件列表
+    IList<MComponentCfgBase> _printItems = new List<MComponentCfgBase>();
+
+    [Parameter]
+    public IList<MComponentCfgBase> PrintItems
+    {
+        get { return _printItems; }
+        set { _printItems = value; }
+    }
+    /// <summary>
+    /// 当前选中的组件
+    /// </summary>
+    [Parameter]
+    public MComponentCfgBase? SelectedItem { get; set; }
     #region 页面尺寸
     private Dictionary<string, (double Width, double Height)> PaperSizes = new()
     {
@@ -24,16 +43,6 @@ public partial class MDesignPaper
     private (double Width, double Height) CurrentPaperSize => PaperSizes[CurrentPaperSizeKey];
     #endregion
 
-    IEnumerable<MComponentCfgBase> _printItems = new List<MComponentCfgBase>();
-
-    [Parameter]
-    public IEnumerable<MComponentCfgBase> PrintItems
-    {
-        get { return _printItems; }
-        set { _printItems = value; }
-    }
-    [Parameter]
-    public MComponentCfgBase? SelectedItem { get; set; }
     //bool _shouldRender = false;
     //protected override bool ShouldRender()
     //{
@@ -58,7 +67,11 @@ public partial class MDesignPaper
 
     List<MRenderElements> renderElements = new List<MRenderElements>();
 
-    void PrintItemCliecked(MComponentCfgBase item)
+    /// <summary>
+    /// 页面控件被点击时触发的事件
+    /// </summary>
+    /// <param name="item"></param>
+    void PrintCompnonetCliecked(MComponentCfgBase item)
     {
         foreach (var pm in PrintItems)
         {
@@ -67,9 +80,12 @@ public partial class MDesignPaper
                 pm.IsSelected = false;
             }
         }
+        item.IsSelected = true;
         SelectedItem = item;
-
-        StateHasChanged();
+        if (OnComponentClicked != null)
+        {
+            OnComponentClicked.Invoke(SelectedItem); 
+        }
     }
     //打印纸空白区域被点击
     void PrintPaperClicked(MouseEventArgs args)
@@ -80,12 +96,17 @@ public partial class MDesignPaper
 
         }
         SelectedItem = null;
+
     }
 
     void ClearSelectedItems(MComponentCfgBase item)
     {
+        PrintItems.Remove(item);
         renderElements.RemoveAll((x=>x.ID==item.ID));
-        StateHasChanged();
+        if (OnComponentDeleted != null)
+        {
+            OnComponentDeleted.Invoke(item);
+        }
     }
     void PrintPaperOnKeyPressed(KeyboardEventArgs args, MComponentCfgBase item)
     {
@@ -126,9 +147,6 @@ public partial class MDesignPaper
             dragStartLeft = args.ClientX;
             dragStartTop = args.ClientY;
         }
-        // top = args.ClientY;
-        // left = args.ClientX;
-        // args.DataTransfer.EffectAllowed = "move";
     }
 }
 class MRenderElements
