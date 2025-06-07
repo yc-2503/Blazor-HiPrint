@@ -16,12 +16,16 @@ public class MElementBase<TTmplt>: ComponentBase where TTmplt : MComponentCfgBas
     {
         return _shouldRender;
     }
-    protected override async Task OnParametersSetAsync()
+
+    protected override void OnAfterRender(bool firstRender)
     {
-
-        Data.FieldHasChanged += (_, _) => { _shouldRender = true; StateHasChanged(); };
-
-        await base.OnParametersSetAsync();
+        base.OnAfterRender(firstRender);
+        if (firstRender) {
+            Data.FieldHasChanged += (name, _) => {
+                _shouldRender = true;
+                StateHasChanged();
+            };
+        }
         _shouldRender = false;
     }
 }

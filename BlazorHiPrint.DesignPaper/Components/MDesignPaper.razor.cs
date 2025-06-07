@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace BlazorHiPrint.DesignPaper.Components;
@@ -56,6 +57,9 @@ public partial class MDesignPaper
         {
             if(!renderElements.Any(x=>x.ID == item.ID))
             {
+                item.FieldHasChanged += (name, _) => {
+                    StateHasChanged();
+                };
                 renderElements.Add(new MRenderElements(item));
             }
         }

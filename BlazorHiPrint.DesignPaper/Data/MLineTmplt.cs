@@ -5,10 +5,6 @@ namespace BlazorHiprint.DesignPaper.Data;
 public class MLineTmplt : MComponentCfgBase
 {
 
-    public Action<string, object?>? FieldHasChanged;
-    protected double _top;
-    protected double _left;
-    protected bool _isSelected;
     public MLineTmplt(double top, double left, Action<string, object?>? fieldHasChanged) : base(top, left, fieldHasChanged, UnitType.Line)
     {
         //_centerY = top + Length / 2 * Math.Sin(Angle * Math.PI / 180);

@@ -18,14 +18,16 @@ public abstract class MComponentCfgBase
         UnitType = unitType;
         ID = Guid.NewGuid().ToString();
     }
-    public Action<string, object?>? FieldHasChanged;
+    public Action<string, object?>? FieldHasChanged { get; set; }
     protected double _top;
     protected double _left;
     protected bool _isSelected;
     public string ID { get; init; }
-    public Type ComponentType { get { return GetPrintElementType(); } }
+    public Type ComponentType { get { return GetPrintComponentType(); } }
+    public Type ComponentConfigType { get { return GetPrintComponentConfigType(); } }
+
     //控件类型
-   // [AutoGenerateColumn(Ignore = true)]
+    // [AutoGenerateColumn(Ignore = true)]
     public UnitType UnitType { get; set; }
     //是否被选中
    // [AutoGenerateColumn(Ignore = true)]
@@ -68,7 +70,7 @@ public abstract class MComponentCfgBase
             }
         }
     }
-    public Type GetPrintElementType()
+    Type GetPrintComponentType()
     {
         Type _selectedType;
         switch (UnitType)
@@ -97,6 +99,38 @@ public abstract class MComponentCfgBase
             default:
                 throw new InvalidOperationException("未处理类型:"+UnitType);
                 
+        }
+        return _selectedType;
+    }
+    Type GetPrintComponentConfigType()
+    {
+        Type _selectedType;
+        switch (UnitType)
+        {
+            case UnitType.BarCode:
+                _selectedType = typeof(MBarCodeConfig);
+                break;
+            case UnitType.Text:
+                _selectedType = typeof(MTextConfig);
+                break;
+            case UnitType.Rectangle:
+                _selectedType = typeof(MRectangleConfig);
+                break;
+            case UnitType.Line:
+                _selectedType = typeof(MLineConfig);
+                break;
+            case UnitType.Circle:
+                _selectedType = typeof(MCircleConfig);
+                break;
+            case UnitType.Image:
+                _selectedType = typeof(MImageConfig);
+                break;
+            case UnitType.Table:
+                _selectedType = typeof(MTableConfig);
+                break;
+            default:
+                throw new InvalidOperationException("未处理类型:" + UnitType);
+
         }
         return _selectedType;
     }

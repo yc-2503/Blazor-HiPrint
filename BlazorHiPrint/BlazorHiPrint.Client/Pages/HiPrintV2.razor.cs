@@ -12,7 +12,7 @@ public partial class HiPrintV2
     private bool isReadyAddNew = false;
     private UnitType newType;
 
-    private Type? selectedType => PrintElementsFactory.GetPrintElementConfigureType(SelectedItem!);
+
 
     protected override void OnInitialized()
     {
