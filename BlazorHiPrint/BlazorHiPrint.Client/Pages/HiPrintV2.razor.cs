@@ -6,8 +6,8 @@ namespace BlazorHiPrint.Client.Pages;
 
 public partial class HiPrintV2
 {
-    private List<MComponentCfgBase> MyPrintItems = new();
-    private MComponentCfgBase? SelectedItem { get; set; }
+    private List<MComponentTmpltBase> MyPrintItems = new();
+    private MComponentTmpltBase? SelectedItem { get; set; }
     private Dictionary<string, object> configParameters = new();
     private bool isReadyAddNew = false;
     private UnitType newType;
@@ -23,14 +23,14 @@ public partial class HiPrintV2
     {
         MyPrintItems.Clear();
 
-        MComponentCfgBase m2 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
+        MComponentTmpltBase m2 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
         {
             Top = 10,
             Left = 10,
             //    FiledHasChanged = (_, _) => StateHasChanged(),
             UnitType = UnitType.Text
         });
-        MComponentCfgBase m3 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
+        MComponentTmpltBase m3 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
         {
             Top = 20,
             Left = 60,
@@ -38,14 +38,14 @@ public partial class HiPrintV2
             UnitType = UnitType.BarCode
         });
 
-        MComponentCfgBase m4 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
+        MComponentTmpltBase m4 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
         {
             Top = 160,
             Left = 10,
             //    FiledHasChanged = (_, _) => StateHasChanged(),
             UnitType = UnitType.Rectangle
         });
-        MComponentCfgBase m5 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
+        MComponentTmpltBase m5 = PrintElementsFactory.CreateMTmplt(new CreateMTmpltOptions()
         {
             Top = 180,
             Left = 30,
@@ -88,7 +88,7 @@ public partial class HiPrintV2
 
     }
 
-    void PrintItemClicked(MComponentCfgBase item)
+    void PrintItemClicked(MComponentTmpltBase item)
     {
 
         configParameters["Data"] = item;
@@ -98,7 +98,7 @@ public partial class HiPrintV2
     }
 
 
-    void ClearSelectedItems(MComponentCfgBase item)
+    void ClearSelectedItems(MComponentTmpltBase item)
     {
         MyPrintItems.Remove(item);
         StateHasChanged();

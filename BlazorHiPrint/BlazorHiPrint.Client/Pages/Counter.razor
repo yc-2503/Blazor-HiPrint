@@ -19,9 +19,14 @@
 <div>
 
     <QuickGrid Items="people">
-        <PropertyColumn Property="@(p => GetValue(p,"PersonId"))" Sortable="true" />
-        <PropertyColumn Property="@(p =>  GetValue(p,"Name") )" Sortable="true" />
-        <PropertyColumn Property="@(p =>  GetValue(p,"PromotionDate") )" Sortable="true" />
+        <PropertyColumn Property="@(p => GetValue(p, "PersonId"))" title="PersonId" Sortable="true">
+        <HeaderTemplate >
+            <div @onclick="()=>ColumnClick()">@context.Title</div>
+        </HeaderTemplate>
+
+        </PropertyColumn>
+        <PropertyColumn Property="@(p => GetValue(p, "Name"))" Title="Name" Sortable="true" />
+        <PropertyColumn Property="@(p => GetValue(p, "PromotionDate"))" Title="PromotionDate" Sortable="true" />
     </QuickGrid>
 </div>
 
@@ -50,7 +55,10 @@
         new Person(11898, "Jose Hernandez", new DateOnly(2011, 5, 3)),
         new Person(12130, "Kenji Sato", new DateOnly(2004, 1, 9)),
     }.AsQueryable();
-   
 
+    public void ColumnClick()
+    {
+        System.Console.WriteLine("ColumnClick " );
+    }
 
 }

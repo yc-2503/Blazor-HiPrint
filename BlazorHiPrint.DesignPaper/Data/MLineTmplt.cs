@@ -2,7 +2,7 @@ using BlazorHiprint.DesignPaper.Data;
 
 namespace BlazorHiprint.DesignPaper.Data;
 
-public class MLineTmplt : MComponentCfgBase
+public class MLineTmplt : MComponentTmpltBase
 {
 
     public MLineTmplt(double top, double left, Action<string, object?>? fieldHasChanged) : base(top, left, fieldHasChanged, UnitType.Line)

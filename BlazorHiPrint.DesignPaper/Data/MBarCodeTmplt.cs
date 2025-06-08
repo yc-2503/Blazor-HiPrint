@@ -3,7 +3,7 @@ using ZXing;
 
 namespace BlazorHiprint.DesignPaper.Data;
 
-public class MBarCodeTmplt : MComponentCfgBase
+public class MBarCodeTmplt : MComponentTmpltBase
 {
     public MBarCodeTmplt(double top, double left, Action<string, object?>? fieldHasChanged)
     : base(top, left, fieldHasChanged, UnitType.BarCode)

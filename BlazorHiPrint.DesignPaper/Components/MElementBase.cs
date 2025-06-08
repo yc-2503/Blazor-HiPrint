@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 
 namespace BlazorHiprint.DesignPaper.Components;
 
-public class MElementBase<TTmplt>: ComponentBase where TTmplt : MComponentCfgBase
+public class MElementBase<TTmplt>: ComponentBase where TTmplt : MComponentTmpltBase
 {
 
     [NotNull]

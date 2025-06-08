@@ -1,39 +1,7 @@
-﻿@using BlazorHiprint.DesignPaper.Data
-@namespace BlazorHiprint.DesignPaper.Components.Text
+﻿@using BlazorHiPrint.DesignPaper.Components.MEditorForm
+@using BlazorHiprint.DesignPaper.Components
+@using BlazorHiprint.DesignPaper.Data
 @inherits MElementBase<MTextTmplt>
-
-<div class="form-group">
-    <label>Text Content</label>
-    <input type="text" class="form-control" @bind="Data.Text" />
-</div>
-<div class="form-group">
-    <label>Font Size</label>
-    <input type="number" class="form-control" @bind="Data.FontSize" />
-</div>
-<div class="form-group">
-    <label>Font Family</label>
-    <select class="form-control" @bind="Data.FontFamily">
-        <option value="Arial">Arial</option>
-        <option value="Times New Roman">Times New Roman</option>
-        <option value="Courier New">Courier New</option>
-    </select>
-</div>
-<div class="form-group">
-    <label>Font Weight</label>
-    <select class="form-control" @bind="Data.FontWeight">
-        <option value="normal">Normal</option>
-        <option value="bold">Bold</option>
-    </select>
-</div>
-<div class="form-group">
-    <label>Text Color</label>
-    <input type="color" class="form-control" @bind="Data.Color" />
-</div>
-<div class="form-group">
-    <label>Top Position</label>
-    <input type="number" class="form-control" @bind="Data.Top" />
-</div>
-<div class="form-group">
-    <label>Left Position</label>
-    <input type="number" class="form-control" @bind="Data.Left" />
+<div>
+    <MEditorForm Model="Data"></MEditorForm>
 </div>

@@ -1,6 +1,6 @@
 namespace BlazorHiprint.DesignPaper.Data;
 
-public class MRectangleTmplt : MComponentCfgBase
+public class MRectangleTmplt : MComponentTmpltBase
 {
     private double _width = 100;
     public double Width {

@@ -1,8 +1,8 @@
-﻿using BlazorHiprint.DesignPaper.Data;
+﻿using BlazorHiprint.DesignPaper.Components;
+using BlazorHiprint.DesignPaper.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace BlazorHiPrint.DesignPaper.Components;
@@ -11,15 +11,15 @@ public partial class MDesignPaper
 {
     //组件被点击
     [Parameter]
-    public Action<MComponentCfgBase>? OnComponentClicked { get; set; }
+    public Action<MComponentTmpltBase>? OnComponentClicked { get; set; }
     //组件被删除
     [Parameter]
-    public Action<MComponentCfgBase>? OnComponentDeleted { get; set; }
+    public Action<MComponentTmpltBase>? OnComponentDeleted { get; set; }
     //需要显示的组件列表
-    IList<MComponentCfgBase> _printItems = new List<MComponentCfgBase>();
+    IList<MComponentTmpltBase> _printItems = new List<MComponentTmpltBase>();
 
     [Parameter]
-    public IList<MComponentCfgBase> PrintItems
+    public IList<MComponentTmpltBase> PrintItems
     {
         get { return _printItems; }
         set { _printItems = value; }
@@ -28,7 +28,7 @@ public partial class MDesignPaper
     /// 当前选中的组件
     /// </summary>
     [Parameter]
-    public MComponentCfgBase? SelectedItem { get; set; }
+    public MComponentTmpltBase? SelectedItem { get; set; }
     #region 页面尺寸
     private Dictionary<string, (double Width, double Height)> PaperSizes = new()
     {
@@ -75,7 +75,7 @@ public partial class MDesignPaper
     /// 页面控件被点击时触发的事件
     /// </summary>
     /// <param name="item"></param>
-    void PrintCompnonetCliecked(MComponentCfgBase item)
+    void PrintCompnonetCliecked(MComponentTmpltBase item)
     {
         foreach (var pm in PrintItems)
         {
@@ -103,7 +103,7 @@ public partial class MDesignPaper
 
     }
 
-    void ClearSelectedItems(MComponentCfgBase item)
+    void ClearSelectedItems(MComponentTmpltBase item)
     {
         PrintItems.Remove(item);
         renderElements.RemoveAll((x=>x.ID==item.ID));
@@ -112,7 +112,7 @@ public partial class MDesignPaper
             OnComponentDeleted.Invoke(item);
         }
     }
-    void PrintPaperOnKeyPressed(KeyboardEventArgs args, MComponentCfgBase item)
+    void PrintPaperOnKeyPressed(KeyboardEventArgs args, MComponentTmpltBase item)
     {
         if (args.Key == "Delete")
         {
@@ -155,19 +155,21 @@ public partial class MDesignPaper
 }
 class MRenderElements
 {
-    public MRenderElements(MComponentCfgBase mcmpntConfig)
+    public MRenderElements(MComponentTmpltBase mcmpntConfig)
     {
         MCmpntConfig = mcmpntConfig;
         Fragment =  (cfg)=> (RenderTreeBuilder __builder) => {
 
-            __builder.OpenComponent(1,mcmpntConfig.ComponentType);
+            __builder.OpenComponent(1,PrintElementsFactory.GetPrintElementType(cfg));
             __builder.AddComponentParameter(2, "Data", cfg);
             __builder.CloseComponent();
 
         };
     }
     public string ID { get { return MCmpntConfig.ID; } }
-    public MComponentCfgBase MCmpntConfig { get; init; }
-    public RenderFragment<MComponentCfgBase>Fragment { get; init; }
+    public MComponentTmpltBase MCmpntConfig { get; init; }
+    public RenderFragment<MComponentTmpltBase>Fragment { get; init; }
+
+
 
 }

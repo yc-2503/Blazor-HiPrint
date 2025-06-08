@@ -2,7 +2,7 @@ using BlazorHiprint.DesignPaper.Data;
 
 namespace BlazorHiprint.DesignPaper.Data;
 
-public class MCircleTmplt : MComponentCfgBase
+public class MCircleTmplt : MComponentTmpltBase
 {
     private double _width = 100;
     public double Width {

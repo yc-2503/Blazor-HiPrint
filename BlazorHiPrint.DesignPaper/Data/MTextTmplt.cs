@@ -2,7 +2,7 @@ using BlazorHiprint.DesignPaper.Data;
 
 namespace BlazorHiprint.DesignPaper.Data;
 
-public class MTextTmplt : MComponentCfgBase
+public class MTextTmplt : MComponentTmpltBase
 {
     private string? _text = "Text";
     public string? Text {

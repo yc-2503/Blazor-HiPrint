@@ -1,4 +1,5 @@
-﻿using BlazorHiprint.DesignPaper.Data;
+﻿using BlazorHiprint.DesignPaper.Components;
+using BlazorHiprint.DesignPaper.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -11,7 +12,7 @@ public partial class MComponentConfigBox
     /// </summary>
 
     [Parameter]
-    public MComponentCfgBase? SelectedItem { get; set; }
+    public MComponentTmpltBase? SelectedItem { get; set; }
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
@@ -20,7 +21,7 @@ public partial class MComponentConfigBox
             Fragment =  (RenderTreeBuilder __builder) =>
             {
 
-                __builder.OpenComponent(1, SelectedItem.ComponentConfigType);
+                __builder.OpenComponent(1, PrintElementsFactory.GetPrintElementConfigureType(SelectedItem));
                 __builder.AddComponentParameter(2, "Data", SelectedItem);
                 __builder.CloseComponent();
 

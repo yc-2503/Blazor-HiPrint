@@ -1,0 +1,191 @@
+﻿@* 自动表单生成组件 *@
+@* 功能：根据传入的Model自动生成编辑表单，支持嵌套对象 *@
+@using BlazorHiprint.DesignPaper.Data
+@using System.Diagnostics.CodeAnalysis
+@using System.Reflection
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Linq
+@using BlazorHiprint.DesignPaper.Attributes
+
+@* 主表单区域 *@
+<form>
+    @if (properties != null)
+    {
+        foreach (var prop in properties)
+        {
+            if (IsBasicType(prop.PropertyType))
+            {
+                @if (prop.PropertyType == typeof(bool))
+                {
+                    var boolValue = (bool)(GetPropertyValue(Model, prop) ?? false);
+                    <div class="form-check mb-3">
+                        <input type="checkbox" 
+                               class="form-check-input"
+                               checked="@boolValue" 
+                               @onchange="@(e => SetPropertyValue(Model, prop, (bool)e.Value))" />
+                        <label class="form-check-label ml-2">@prop.Name</label>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group mb-3">
+                        <label class="mb-1">@prop.Name</label>
+                        @if (prop.PropertyType.IsEnum)
+                        {
+                            var enumValue = (Enum)GetPropertyValue(Model, prop);
+                            <select class="form-control" 
+                                    value="@enumValue"
+                                    @onchange="@(e => SetEnumPropertyValue(Model, prop, e, prop.PropertyType))">
+                                @foreach (var value in Enum.GetValues(prop.PropertyType))
+                                {
+                                    <option value="@value">@value</option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            var stringValue = GetPropertyValue(Model, prop)?.ToString() ?? "";
+                            <input class="form-control" 
+                                   value="@stringValue"
+                                   @onchange="@(e => SetStringPropertyValue(Model, prop, e.Value.ToString()))" />
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                    <div class="card mb-3">
+                    <div class="card-header" @onclick="() => ToggleCollapse(prop.Name)">
+                        <h5 class="mb-0 d-flex align-items-center">
+                            <span class="mr-2">@prop.Name</span>
+                            <i class="fas @(_collapsedStates.ContainsKey(prop.Name) && _collapsedStates[prop.Name] ? "fa-chevron-down" : "fa-chevron-up")"></i>
+                        </h5>
+                    </div>
+                    <div class="collapse @(_collapsedStates.ContainsKey(prop.Name) && !_collapsedStates[prop.Name] ? "show" : "")">
+                        <div class="card-body pt-2 pb-3">
+                            @{
+                                var nestedModel = prop.GetValue(Model) as MComponentTmpltBase;
+                                if (nestedModel != null)
+                                {
+                                    <MEditorForm Model="@nestedModel" />
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+</form>
+
+@code {
+    [NotNull]
+    [Parameter]
+    public MComponentTmpltBase? Model { get; set; }
+    PropertyInfo[]? properties = null;
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (Model != null)
+        {
+            properties = Model.GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => 
+                    !typeof(Delegate).IsAssignableFrom(p.PropertyType) &&
+                    (p.GetCustomAttribute<AutoGenerateColumnAttribute>()?.Ignore != true)
+                )
+                .ToArray();
+        }
+        else
+        {
+            properties = null;
+        }
+    }
+    
+    private Dictionary<string, bool> _collapsedStates = new Dictionary<string, bool>();
+    private void ToggleCollapse(string propertyName)
+    {
+        if (_collapsedStates.ContainsKey(propertyName))
+        {
+            _collapsedStates[propertyName] = !_collapsedStates[propertyName];
+        }
+        else
+        {
+            _collapsedStates[propertyName] = false;
+        }
+    }
+
+    private object GetPropertyValue(object model, PropertyInfo property)
+    {
+        return property.GetValue(model);
+    }
+
+    private void SetPropertyValue(object model, PropertyInfo property, object value)
+    {
+        property.SetValue(model, value);
+    }
+
+    private void SetStringPropertyValue(object model, PropertyInfo property, string value)
+    {
+        var targetType = property.PropertyType;
+        if (targetType == typeof(string))
+        {
+            property.SetValue(model, value);
+        }
+        else
+        {
+            try
+            {
+                var convertedValue = Convert.ChangeType(value, targetType);
+                property.SetValue(model, convertedValue);
+            }
+            catch
+            {
+                // 类型转换失败处理
+            }
+        }
+    }
+
+    private void SetEnumPropertyValue(object model, PropertyInfo property, ChangeEventArgs e, Type enumType)
+    {
+        if (e.Value != null)
+        {
+            var stringValue = e.Value.ToString();
+            if (!string.IsNullOrEmpty(stringValue))
+            {
+                try
+                {
+                    var enumValue = Enum.Parse(enumType, stringValue);
+                    property.SetValue(model, enumValue);
+                }
+                catch
+                {
+                    // 枚举解析失败处理
+                }
+            }
+        }
+    }
+
+    private bool IsBasicType(Type type)
+    {
+        if (type.IsPrimitive || 
+            type == typeof(string) || 
+            type == typeof(decimal) || 
+            type == typeof(DateTime) || 
+            type == typeof(DateTimeOffset) || 
+            type == typeof(TimeSpan) || 
+            type == typeof(Guid) || 
+            type.IsEnum)
+        {
+            return true;
+        }
+
+        Type underlyingType = Nullable.GetUnderlyingType(type);
+        if (underlyingType != null)
+        {
+            return IsBasicType(underlyingType);
+        }
+
+        return false;
+    }
+}

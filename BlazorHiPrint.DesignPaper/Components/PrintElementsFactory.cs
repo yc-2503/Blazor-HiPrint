@@ -1,19 +1,19 @@
 using BlazorHiPrint.DesignPaper.Components.Rectangle;
-using BlazorHiprint.DesignPaper.Components.Table;
-using BlazorHiprint.DesignPaper.Components.Text;
 using BlazorHiprint.DesignPaper.Data;
 using BlazorHiPrint.DesignPaper.Components.BarCode;
 using BlazorHiPrint.DesignPaper.Components.Line;
 using BlazorHiPrint.DesignPaper.Components.Circle;
 using BlazorHiPrint.DesignPaper.Components.Image;
+using BlazorHiPrint.DesignPaper.Components.Table;
+using BlazorHiPrint.DesignPaper.Components.Text;
 
 namespace BlazorHiprint.DesignPaper.Components;
 
 public static class PrintElementsFactory
 {
-    public static Type? GetPrintElementType(MComponentCfgBase templateUnit)
+    public static Type GetPrintElementType(MComponentTmpltBase templateUnit)
     {
-        Type? _selectedType;
+        Type _selectedType;
         switch (templateUnit.UnitType)
         {
             case UnitType.BarCode:
@@ -38,15 +38,15 @@ public static class PrintElementsFactory
                 _selectedType = typeof(MTable);
                 break;
             default:
-                _selectedType = null;
-                break;
+                throw new InvalidOperationException("未处理类型:" + templateUnit.UnitType);
+
         }
         return _selectedType;
     }
 
-    public static Type? GetPrintElementConfigureType(MComponentCfgBase templateUnit)
+    public static Type GetPrintElementConfigureType(MComponentTmpltBase templateUnit)
     {
-        Type? _selectedType = null;
+        Type _selectedType = null;
         switch (templateUnit.UnitType)
         {
             case UnitType.BarCode:
@@ -71,13 +71,13 @@ public static class PrintElementsFactory
                 _selectedType = typeof(MTableConfig);
                 break;
             default:
-                _selectedType = null;
-                break;
+                throw new InvalidOperationException("未处理类型:" + templateUnit.UnitType);
+
         }
 
         return _selectedType;
     }
-    public static MComponentCfgBase CreateMTmplt(CreateMTmpltOptions options)
+    public static MComponentTmpltBase CreateMTmplt(CreateMTmpltOptions options)
     {
         switch (options.UnitType)
         {
