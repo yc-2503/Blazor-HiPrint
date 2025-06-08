@@ -63,17 +63,10 @@ public partial class HiPrintV2
         new Person(12130, "Kenji Sato", new DateOnly(2004, 1, 9)),
     };
 
-        IEnumerable<MTableColumn> tableColumns = new[]
-        {
-            new MTableColumn("PersonId"),
-            new MTableColumn("Name"),
-            new MTableColumn("PromotionDate"),
 
-        };
         MTableTmplt m6 = new MTableTmplt(100, 40, null)
         {
             TModel = typeof(Person),
-            Columns = tableColumns,
             Items = people
         };
         SelectedItem = m2;

@@ -8,7 +8,7 @@
 @using BlazorHiprint.DesignPaper.Attributes
 
 @* 主表单区域 *@
-<form>
+<form style="min-height: auto; max-height: 500px; overflow-y: auto;">
     @if (properties != null)
     {
         foreach (var prop in properties)
@@ -18,18 +18,23 @@
                 @if (prop.PropertyType == typeof(bool))
                 {
                     var boolValue = (bool)(GetPropertyValue(Model, prop) ?? false);
-                    <div class="form-check mb-3">
-                        <input type="checkbox" 
-                               class="form-check-input"
-                               checked="@boolValue" 
-                               @onchange="@(e => SetPropertyValue(Model, prop, (bool)e.Value))" />
-                        <label class="form-check-label ml-2">@prop.Name</label>
+                    <div class="form-group mb-2 row">
+                        <label class="col-sm-4 col-form-label">@prop.Name</label>
+                        <div class="col-sm-8">
+                            <div class="form-check">
+                                <input type="checkbox" 
+                                       class="form-check-input"
+                                       checked="@boolValue" 
+                                       @onchange="@(e => SetPropertyValue(Model, prop, (bool)e.Value))" />
+                            </div>
+                        </div>
                     </div>
                 }
                 else
                 {
-                    <div class="form-group mb-3">
-                        <label class="mb-1">@prop.Name</label>
+                    <div class="form-group mb-2 row">
+                        <label class="col-sm-4 col-form-label">@prop.Name</label>
+                        <div class="col-sm-8">
                         @if (prop.PropertyType.IsEnum)
                         {
                             var enumValue = (Enum)GetPropertyValue(Model, prop);
@@ -49,26 +54,69 @@
                                    value="@stringValue"
                                    @onchange="@(e => SetStringPropertyValue(Model, prop, e.Value.ToString()))" />
                         }
+                        </div>
                     </div>
                 }
             }
+            else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            {
+                var collection = prop.GetValue(Model) as System.Collections.IEnumerable;
+                var count = collection?.Cast<object>().Count() ?? 0;
+                var itemType = prop.PropertyType.GetGenericArguments()[0];
+                
+                <div class="card mb-3">
+                    <div class="card-header" @onclick="() => ToggleCollapse(prop.Name)">
+                        <div class="mb-0 d-flex align-items-center">
+                            <i class="fas mr-2 @(_collapsedStates.ContainsKey(prop.Name) && _collapsedStates[prop.Name] ? "fa-plus" : "fa-minus")"></i>
+                            <span>@prop.Name (@count items)</span>
+                        </div>
+                    </div>
+                    <div class="collapse @(_collapsedStates.ContainsKey(prop.Name) && !_collapsedStates[prop.Name] ? "show" : "")">
+                        <div class="card-body pt-2 pb-3">
+                            @if (collection != null)
+                            {
+                                int index = 0;
+                                @foreach (var item in collection)
+                                {
+                                            var localIndex = index;
+                                    <div class="mb-3">
+                                        <div @onclick="() => ToggleCollapse(prop.Name + localIndex)">Item @(index + 1)</div>
+                                        @if (IsBasicType(itemType))
+                                        {
+                       
+                                            <input class="form-control" 
+                                                   value="@item?.ToString()" 
+                                                   @onchange="@(e => HandleCollectionItemChange(collection, localIndex, e.Value.ToString()))" />
+                                        }
+                                        else 
+                                        {
+                                            <div class="collapse @(_collapsedStates.ContainsKey(prop.Name + localIndex) && !_collapsedStates[prop.Name + localIndex] ? "show" : "")">
+                                                <div class="card-body pt-2 pb-3">
+                                                    <MEditorForm Model="@item" />
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    index++;
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
             else
             {
-                    <div class="card mb-3">
+                <div class="card mb-3">
                     <div class="card-header" @onclick="() => ToggleCollapse(prop.Name)">
-                        <h5 class="mb-0 d-flex align-items-center">
-                            <span class="mr-2">@prop.Name</span>
-                            <i class="fas @(_collapsedStates.ContainsKey(prop.Name) && _collapsedStates[prop.Name] ? "fa-chevron-down" : "fa-chevron-up")"></i>
-                        </h5>
+                        <div class="mb-0 d-flex align-items-center">
+                            <i class="fas mr-2 @(_collapsedStates.ContainsKey(prop.Name) && _collapsedStates[prop.Name] ? "+" : "-")"></i>
+                            <span>@prop.Name</span>
+                        </div>
                     </div>
                     <div class="collapse @(_collapsedStates.ContainsKey(prop.Name) && !_collapsedStates[prop.Name] ? "show" : "")">
                         <div class="card-body pt-2 pb-3">
                             @{
-                                var nestedModel = prop.GetValue(Model) as MComponentTmpltBase;
-                                if (nestedModel != null)
-                                {
-                                    <MEditorForm Model="@nestedModel" />
-                                }
+                                <MEditorForm Model="@Model" />
                             }
                         </div>
                     </div>
@@ -81,7 +129,11 @@
 @code {
     [NotNull]
     [Parameter]
-    public MComponentTmpltBase? Model { get; set; }
+    public object? Model { get; set; }
+
+    [Parameter]
+    public Action<string, object?>? FieldHasChanged { get; set; }
+
     PropertyInfo[]? properties = null;
     protected override void OnParametersSet()
     {
@@ -186,6 +238,35 @@
             return IsBasicType(underlyingType);
         }
 
+        // Check for IEnumerable<T>
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+        {
+            return false;
+        }
+
         return false;
+    }
+
+    private void HandleCollectionItemChange(System.Collections.IEnumerable collection, int index, string newValue)
+    {
+        var list = collection.Cast<object>().ToList();
+        if (index >= 0 && index < list.Count)
+        {
+            var itemType = list[index]?.GetType();
+            if (itemType != null && IsBasicType(itemType))
+            {
+                try
+                {
+                    var convertedValue = Convert.ChangeType(newValue, itemType);
+                    list[index] = convertedValue;
+                    // Trigger change notification if needed
+                    FieldHasChanged?.Invoke("CollectionItem", list);
+                }
+                catch
+                {
+                    // Type conversion failed
+                }
+            }
+        }
     }
 }

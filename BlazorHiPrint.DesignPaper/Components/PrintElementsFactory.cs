@@ -44,39 +44,7 @@ public static class PrintElementsFactory
         return _selectedType;
     }
 
-    public static Type GetPrintElementConfigureType(MComponentTmpltBase templateUnit)
-    {
-        Type _selectedType = null;
-        switch (templateUnit.UnitType)
-        {
-            case UnitType.BarCode:
-                _selectedType = typeof(MBarCodeConfig);
-                break;
-            case UnitType.Text:
-                _selectedType = typeof(MTextConfig);
-                break;
-            case UnitType.Rectangle:
-                _selectedType = typeof(MRectangleConfig);
-                break;
-            case UnitType.Line:
-                _selectedType = typeof(MLineConfig);
-                break;
-            case UnitType.Circle:
-                _selectedType = typeof(MCircleConfig);
-                break;
-            case UnitType.Image:
-                _selectedType = typeof(MImageConfig);
-                break;
-            case UnitType.Table:
-                _selectedType = typeof(MTableConfig);
-                break;
-            default:
-                throw new InvalidOperationException("未处理类型:" + templateUnit.UnitType);
 
-        }
-
-        return _selectedType;
-    }
     public static MComponentTmpltBase CreateMTmplt(CreateMTmpltOptions options)
     {
         switch (options.UnitType)

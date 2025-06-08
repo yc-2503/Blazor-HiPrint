@@ -1,5 +1,6 @@
 ﻿@page "/hiprintv2"
 @using BlazorHiPrint.DesignPaper.Components
+@using BlazorHiPrint.DesignPaper.Components.MEditorForm
 @using BlazorHiprint.DesignPaper.Data
 @rendermode InteractiveAuto
 
@@ -28,7 +29,7 @@
         <div class="col-sm-2" style="border: 1px solid #73AD21;">
             @if (SelectedItem != null)
             {
-                <MComponentConfigBox SelectedItem="SelectedItem"></MComponentConfigBox>
+                <MEditorForm Model="SelectedItem"></MEditorForm>
             }
         </div>
     </div>
