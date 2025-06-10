@@ -1,5 +1,10 @@
-﻿@* 自动表单生成组件 *@
-@* 功能：根据传入的Model自动生成编辑表单，支持嵌套对象 *@
+﻿@* 
+  Auto-generating form component that creates an editable form based on a model object.
+  Features:
+  - Supports nested objects and collections
+  - Collapsible sections for complex properties
+  - Automatic input type detection (bool, enum, etc.)
+*@
 @using BlazorHiprint.DesignPaper.Data
 @using System.Diagnostics.CodeAnalysis
 @using System.Reflection
@@ -7,266 +12,149 @@
 @using System.Linq
 @using BlazorHiprint.DesignPaper.Attributes
 
-@* 主表单区域 *@
-<form style="min-height: auto; max-height: 500px; overflow-y: auto;">
-    @if (properties != null)
+@* Main form container with scrollable area *@
+<div style="min-height: auto; max-height: 500px; overflow-y: auto;margin:2px;">
+    @if(componentPrpts != null)
     {
-        foreach (var prop in properties)
-        {
-            if (IsBasicType(prop.PropertyType))
-            {
-                @if (prop.PropertyType == typeof(bool))
+        <table>
+            <tbody>
+                @foreach(var prop in componentPrpts)
                 {
-                    var boolValue = (bool)(GetPropertyValue(Model, prop) ?? false);
-                    <div class="form-group mb-2 row">
-                        <label class="col-sm-4 col-form-label">@prop.Name</label>
-                        <div class="col-sm-8">
-                            <div class="form-check">
-                                <input type="checkbox" 
-                                       class="form-check-input"
-                                       checked="@boolValue" 
-                                       @onchange="@(e => SetPropertyValue(Model, prop, (bool)e.Value))" />
-                            </div>
-                        </div>
-                    </div>
+                    if(prop.NeedCollapse)
+                    {
+                        <tr @onclick="() => ToggleCollapse(prop)">
+                            @* First column: Collapse indicator *@
+                            <td>
+                                <div>@(prop.IsCollapsed?"-":"+")</div>
+                            </td>
+                            @* Second column: Property name (with level indentation) *@
+                            <td>
+                                <div style="padding-left: @(prop.Level * 5)px">
+                                    @prop.Name
+                                </div>
+                            </td>
+                            <td>
+                                <div></div>
+                            </td>
+                        </tr>
+                    }else
+                    {
+                        <tr>
+
+                            <td><div></div></td>
+                            @* Second column: Property name (with level indentation) *@
+                            <td>
+                                <div style="padding-left: @(prop.Level * 5)px">
+                                    @prop.Name
+                                </div>
+                            </td>
+                            @* Third column: Property value input *@
+                            <td>
+                                <MBaseInput Property="@prop"></MBaseInput>
+                            </td>
+                        </tr>
+                    }
+
                 }
-                else
-                {
-                    <div class="form-group mb-2 row">
-                        <label class="col-sm-4 col-form-label">@prop.Name</label>
-                        <div class="col-sm-8">
-                        @if (prop.PropertyType.IsEnum)
-                        {
-                            var enumValue = (Enum)GetPropertyValue(Model, prop);
-                            <select class="form-control" 
-                                    value="@enumValue"
-                                    @onchange="@(e => SetEnumPropertyValue(Model, prop, e, prop.PropertyType))">
-                                @foreach (var value in Enum.GetValues(prop.PropertyType))
-                                {
-                                    <option value="@value">@value</option>
-                                }
-                            </select>
-                        }
-                        else
-                        {
-                            var stringValue = GetPropertyValue(Model, prop)?.ToString() ?? "";
-                            <input class="form-control" 
-                                   value="@stringValue"
-                                   @onchange="@(e => SetStringPropertyValue(Model, prop, e.Value.ToString()))" />
-                        }
-                        </div>
-                    </div>
-                }
-            }
-            else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-            {
-                var collection = prop.GetValue(Model) as System.Collections.IEnumerable;
-                var count = collection?.Cast<object>().Count() ?? 0;
-                var itemType = prop.PropertyType.GetGenericArguments()[0];
-                
-                <div class="card mb-3">
-                    <div class="card-header" @onclick="() => ToggleCollapse(prop.Name)">
-                        <div class="mb-0 d-flex align-items-center">
-                            <i class="fas mr-2 @(_collapsedStates.ContainsKey(prop.Name) && _collapsedStates[prop.Name] ? "fa-plus" : "fa-minus")"></i>
-                            <span>@prop.Name (@count items)</span>
-                        </div>
-                    </div>
-                    <div class="collapse @(_collapsedStates.ContainsKey(prop.Name) && !_collapsedStates[prop.Name] ? "show" : "")">
-                        <div class="card-body pt-2 pb-3">
-                            @if (collection != null)
-                            {
-                                int index = 0;
-                                @foreach (var item in collection)
-                                {
-                                            var localIndex = index;
-                                    <div class="mb-3">
-                                        <div @onclick="() => ToggleCollapse(prop.Name + localIndex)">Item @(index + 1)</div>
-                                        @if (IsBasicType(itemType))
-                                        {
-                       
-                                            <input class="form-control" 
-                                                   value="@item?.ToString()" 
-                                                   @onchange="@(e => HandleCollectionItemChange(collection, localIndex, e.Value.ToString()))" />
-                                        }
-                                        else 
-                                        {
-                                            <div class="collapse @(_collapsedStates.ContainsKey(prop.Name + localIndex) && !_collapsedStates[prop.Name + localIndex] ? "show" : "")">
-                                                <div class="card-body pt-2 pb-3">
-                                                    <MEditorForm Model="@item" />
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-                                    index++;
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="card mb-3">
-                    <div class="card-header" @onclick="() => ToggleCollapse(prop.Name)">
-                        <div class="mb-0 d-flex align-items-center">
-                            <i class="fas mr-2 @(_collapsedStates.ContainsKey(prop.Name) && _collapsedStates[prop.Name] ? "+" : "-")"></i>
-                            <span>@prop.Name</span>
-                        </div>
-                    </div>
-                    <div class="collapse @(_collapsedStates.ContainsKey(prop.Name) && !_collapsedStates[prop.Name] ? "show" : "")">
-                        <div class="card-body pt-2 pb-3">
-                            @{
-                                <MEditorForm Model="@Model" />
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
-        }
+
+
+            </tbody>
+        </table>
     }
-</form>
+</div>
+
 
 @code {
+    /// <summary>
+    /// The model object to generate a form for.
+    /// All public properties will be rendered as editable fields.
+    /// Supports nested objects and collections.
+    /// </summary>
     [NotNull]
     [Parameter]
     public object? Model { get; set; }
 
-    [Parameter]
-    public Action<string, object?>? FieldHasChanged { get; set; }
 
-    PropertyInfo[]? properties = null;
+
+    // [Parameter]
+    // public Action<string, object?>? FieldHasChanged { get; set; }
+    /// <summary>
+    /// List of property info objects that drive the form rendering.
+    /// Generated from the Model parameter in OnParametersSet().
+    /// Contains information about each property including type, value and UI state.
+    /// </summary>
+    List<ComponentPrptInfo>? componentPrpts = null;
+
+    /// <summary>
+    /// Called when parameters are set, initializes the form by parsing the model properties.
+    /// </summary>
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
         if (Model != null)
         {
-            properties = Model.GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => 
-                    !typeof(Delegate).IsAssignableFrom(p.PropertyType) &&
-                    (p.GetCustomAttribute<AutoGenerateColumnAttribute>()?.Ignore != true)
-                )
-                .ToArray();
+
+            componentPrpts = ParsePrpt(Model,0);
         }
         else
         {
-            properties = null;
+
+            componentPrpts = null;
         }
     }
-    
+    /// <summary>
+    /// Tracks collapsed/expanded state for rows with nested properties.
+    /// Key: Property ID as string, Value: true if collapsed
+    /// </summary>
     private Dictionary<string, bool> _collapsedStates = new Dictionary<string, bool>();
-    private void ToggleCollapse(string propertyName)
+    /// <summary>
+    /// Toggles the collapsed state of a property row and updates the UI accordingly.
+    /// When expanding, loads and inserts nested properties.
+    /// When collapsing, removes nested properties from display.
+    /// </summary>
+    /// <param name="prpt">The property info to toggle</param>
+    private void ToggleCollapse(ComponentPrptInfo prpt)
     {
-        if (_collapsedStates.ContainsKey(propertyName))
+        string id = prpt.Id.ToString();
+        if (_collapsedStates.ContainsKey(id))
         {
-            _collapsedStates[propertyName] = !_collapsedStates[propertyName];
+            _collapsedStates[id] = !_collapsedStates[id];
         }
         else
         {
-            _collapsedStates[propertyName] = false;
+            _collapsedStates[id] = true;
+        }
+        prpt.IsCollapsed = _collapsedStates[id];
+        if(prpt.IsCollapsed)
+        {
+            List<ComponentPrptInfo> subPrpts = ParsePrpt(prpt.Value, prpt.Level + 1, prpt);
+            componentPrpts!.InsertRange(componentPrpts.IndexOf(prpt) + 1, subPrpts);
+        }else
+        {
+            CollaspePrpts(prpt.Id);
         }
     }
-
-    private object GetPropertyValue(object model, PropertyInfo property)
+    /// <summary>
+    /// Recursively collapses and removes all nested properties under the specified parent ID.
+    /// </summary>
+    /// <param name="id">The parent property ID to collapse</param>
+    void CollaspePrpts(Guid id)
     {
-        return property.GetValue(model);
-    }
-
-    private void SetPropertyValue(object model, PropertyInfo property, object value)
-    {
-        property.SetValue(model, value);
-    }
-
-    private void SetStringPropertyValue(object model, PropertyInfo property, string value)
-    {
-        var targetType = property.PropertyType;
-        if (targetType == typeof(string))
+        var cps = componentPrpts!.Where(w => w.ParentId == id).Select(t => t.Id).ToList();
+        if(cps != null)
         {
-            property.SetValue(model, value);
-        }
-        else
-        {
-            try
+            foreach(var cp in cps)
             {
-                var convertedValue = Convert.ChangeType(value, targetType);
-                property.SetValue(model, convertedValue);
-            }
-            catch
-            {
-                // 类型转换失败处理
+                CollaspePrpts(cp);
             }
         }
+        componentPrpts!.RemoveAll(w => w.ParentId == id);
     }
 
-    private void SetEnumPropertyValue(object model, PropertyInfo property, ChangeEventArgs e, Type enumType)
-    {
-        if (e.Value != null)
-        {
-            var stringValue = e.Value.ToString();
-            if (!string.IsNullOrEmpty(stringValue))
-            {
-                try
-                {
-                    var enumValue = Enum.Parse(enumType, stringValue);
-                    property.SetValue(model, enumValue);
-                }
-                catch
-                {
-                    // 枚举解析失败处理
-                }
-            }
-        }
-    }
 
-    private bool IsBasicType(Type type)
-    {
-        if (type.IsPrimitive || 
-            type == typeof(string) || 
-            type == typeof(decimal) || 
-            type == typeof(DateTime) || 
-            type == typeof(DateTimeOffset) || 
-            type == typeof(TimeSpan) || 
-            type == typeof(Guid) || 
-            type.IsEnum)
-        {
-            return true;
-        }
 
-        Type underlyingType = Nullable.GetUnderlyingType(type);
-        if (underlyingType != null)
-        {
-            return IsBasicType(underlyingType);
-        }
 
-        // Check for IEnumerable<T>
-        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-        {
-            return false;
-        }
 
-        return false;
-    }
 
-    private void HandleCollectionItemChange(System.Collections.IEnumerable collection, int index, string newValue)
-    {
-        var list = collection.Cast<object>().ToList();
-        if (index >= 0 && index < list.Count)
-        {
-            var itemType = list[index]?.GetType();
-            if (itemType != null && IsBasicType(itemType))
-            {
-                try
-                {
-                    var convertedValue = Convert.ChangeType(newValue, itemType);
-                    list[index] = convertedValue;
-                    // Trigger change notification if needed
-                    FieldHasChanged?.Invoke("CollectionItem", list);
-                }
-                catch
-                {
-                    // Type conversion failed
-                }
-            }
-        }
-    }
+
 }

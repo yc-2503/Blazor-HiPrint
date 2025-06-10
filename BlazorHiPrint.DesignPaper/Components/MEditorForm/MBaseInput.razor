@@ -1,0 +1,51 @@
+﻿@* 
+  Base input component that renders different input types based on property type.
+  Handles bool (checkbox), enum (select dropdown), and other basic types (text input).
+*@
+@using System.Diagnostics.CodeAnalysis
+<div>
+
+    @if (Property.Type == typeof(bool))
+    {
+        var boolValue = (bool)(Property.Value?? false);
+        <div class="form-check">
+            <input type="checkbox"
+                   class="form-check-input"
+                   checked="@boolValue"
+                   @onchange="@(e => Property.Value = (bool)e.Value)" />
+        </div>
+    }
+    else
+    {
+        @if (Property.Type.IsEnum)
+        {
+            var enumValue = (Enum)Property.Value;
+            <select class="form-control"
+                    value="@enumValue"
+                    @onchange="@(e => Property.Value = e.Value)" >
+                @foreach (var value in Enum.GetValues(Property.Type))
+                {
+                    <option value="@value">@value</option>
+                }
+            </select>
+        }
+        else
+        {
+            var stringValue = Property.Value?.ToString() ?? "";
+            <input class="form-control"
+                   value="@stringValue"
+                   @onchange="@(e => Property.Value = e.Value?.ToString() )" />
+        }
+
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// The property information to render an input for.
+    /// Contains type, value, and change handling logic.
+    /// </summary>
+    [NotNull]
+    [Parameter]
+    public ComponentPrptInfo? Property { get; set; }
+}
