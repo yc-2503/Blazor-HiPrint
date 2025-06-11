@@ -1,6 +1,4 @@
-using BlazorHiprint.DesignPaper.Data;
-
-namespace BlazorHiprint.DesignPaper.Data;
+namespace BlazorHiPrint.DesignPaper.Components.Line;
 
 public class MLineTmplt : MComponentTmpltBase
 {
@@ -88,17 +86,17 @@ public class MLineTmplt : MComponentTmpltBase
     }
    // [AutoGenerateColumn(Ignore = true)]
     // 计算线条起点的X坐标
-    public double StartX => (SvgWidth / 2) - Length / 2 * Math.Cos(Angle * Math.PI / 180);
+    public double StartX => SvgWidth / 2 - Length / 2 * Math.Cos(Angle * Math.PI / 180);
    // [AutoGenerateColumn(Ignore = true)]
     // 计算线条起点的Y坐标
-    public double StartY => (SvgHeight / 2) - Length / 2 * Math.Sin(Angle * Math.PI / 180);
+    public double StartY => SvgHeight / 2 - Length / 2 * Math.Sin(Angle * Math.PI / 180);
 
   // [AutoGenerateColumn(Ignore = true)]
     // 计算线条终点的X坐标
-    public double EndX => (SvgWidth / 2) + Length / 2 * Math.Cos(Angle * Math.PI / 180);
+    public double EndX => SvgWidth / 2 + Length / 2 * Math.Cos(Angle * Math.PI / 180);
   //  [AutoGenerateColumn(Ignore = true)]
     // 计算线条终点的Y坐标
-    public double EndY => (SvgHeight / 2) + Length / 2 * Math.Sin(Angle * Math.PI / 180);
+    public double EndY => SvgHeight / 2 + Length / 2 * Math.Sin(Angle * Math.PI / 180);
  //   [AutoGenerateColumn(Ignore = true)]
     // 计算SVG容器的宽度（需要包含线条的完整范围）
     public double SvgWidth => Math.Abs(Length * Math.Cos(Angle * Math.PI / 180));

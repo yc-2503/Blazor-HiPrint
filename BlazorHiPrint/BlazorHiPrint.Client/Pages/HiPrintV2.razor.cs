@@ -1,5 +1,5 @@
 ﻿using BlazorHiprint.DesignPaper.Components;
-using BlazorHiprint.DesignPaper.Data;
+using BlazorHiPrint.DesignPaper.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace BlazorHiPrint.Client.Pages;

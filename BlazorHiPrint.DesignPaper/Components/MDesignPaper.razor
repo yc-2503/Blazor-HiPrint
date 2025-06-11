@@ -1,5 +1,4 @@
 ﻿@using BlazorHiprint.DesignPaper.Components
-@using BlazorHiprint.DesignPaper.Data
 <div class="paper-size-controls mb-3">
     <select class="form-select" @bind="CurrentPaperSizeKey">
         <option value="A3">A3 (297 × 420mm)</option>
@@ -27,6 +26,7 @@
     
                             @item.Fragment(item.MCmpntConfig)
                             <div class="del-btn" @onclick="() => ClearSelectedItems(item.MCmpntConfig)">✕</div>
+                            <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: @(item.MCmpntConfig.IsSelected ? "1px dashed black" : "none"); pointer-events: none;"></div>
  @*                            <div class="resize-panel selected"
                             style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute;
                                  background-color: rgba(0, 0, 0, 0.5); cursor: move; display: @(item.MCmpntConfig.IsSelected? "block" : "none");">
@@ -43,8 +43,8 @@
 
 
                 <div class="hiprint_rul_wrapper">
-                                <img class="h_img" src="./images/l_img.svg">
-                                <img class="v_img" src="./images/v_img.svg">
+                    <img class="h_img" src="_content/BlazorHiPrint.DesignPaper/images/l_img.svg">
+                    <img class="v_img" src="_content/BlazorHiPrint.DesignPaper/images/v_img.svg">
                                 @*         <img class="v_img" src="/vue-plugin-hiprint/static/img/v_img.d7cff5bd.svg"> *@
                 </div>
             </div>

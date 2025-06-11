@@ -1,11 +1,47 @@
 using BlazorHiprint.DesignPaper.Attributes;
-using BlazorHiprint.DesignPaper.Data;
+using BlazorHiPrint.DesignPaper.Components;
 using System.Reflection;
 
 public class MTableTmplt : MComponentTmpltBase
 {
     public int RowHeight { get; set; } = 30;
     public int ColumnWidth { get; set; } = 100;
+    
+    private bool _showBorder = true;
+    /// <summary>
+    /// 获取或设置是否显示表格边框
+    /// </summary>
+    public bool ShowBorder
+    {
+        get { return _showBorder; }
+        set
+        {
+            var hasChanged = _showBorder != value;
+            if (hasChanged)
+            {
+                _showBorder = value;
+                FieldHasChanged?.Invoke(nameof(ShowBorder), value);
+            }
+        }
+    }
+    
+    private string _fontFamily = "Arial";
+    /// <summary>
+    /// 获取或设置表格字体
+    /// </summary>
+    public string FontFamily
+    {
+        get { return _fontFamily; }
+        set
+        {
+            var hasChanged = _fontFamily != value;
+            if (hasChanged)
+            {
+                _fontFamily = value;
+                FieldHasChanged?.Invoke(nameof(FontFamily), value);
+            }
+        }
+    }
 
     public MTableTmplt(double top, double left, Action<string, object?>? fieldHasChanged)
         : base(top, left, fieldHasChanged, UnitType.Table)

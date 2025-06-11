@@ -1,5 +1,4 @@
-﻿
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 
 namespace BlazorHiPrint.DesignPaper.Components.Table;
@@ -36,5 +35,6 @@ public partial class MTable
     {
         Console.WriteLine("ColumnClick "+column);
     }
-}
 
+
+}

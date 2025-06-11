@@ -1,6 +1,4 @@
-using BlazorHiprint.DesignPaper.Data;
-
-namespace BlazorHiprint.DesignPaper.Data;
+namespace BlazorHiPrint.DesignPaper.Components.Circle;
 
 public class MCircleTmplt : MComponentTmpltBase
 {

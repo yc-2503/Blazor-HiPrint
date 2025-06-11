@@ -1,4 +1,4 @@
-namespace BlazorHiprint.DesignPaper.Data;
+namespace BlazorHiPrint.DesignPaper.Components.Rectangle;
 
 public class MRectangleTmplt : MComponentTmpltBase
 {

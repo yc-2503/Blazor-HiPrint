@@ -1,0 +1,56 @@
+﻿.hiprint-printElement.design .del-btn {
+    position: absolute;
+    visibility: hidden;
+    z-index: 10;
+    width: 16px;
+    height: 16px;
+    line-height: 12px;
+    top: -8px;
+    right: -8px;
+    border-radius: 50%;
+    padding: 2px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: center;
+}
+
+.hiprint-printElement.design:hover .del-btn {
+    visibility: visible;
+}
+.hiprint_rul_wrapper {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    border: 0;
+    border-top: 1px solid rgb(201, 190, 190);
+    border-left: 1px solid rgb(201, 190, 190);
+    padding-left: 15px;
+    padding-top: 15px;
+    margin: -16px;
+    box-sizing: content-box !important;
+}
+
+    .hiprint_rul_wrapper .h_img {
+        position: absolute;
+        top: 0px;
+        left: 15px;
+        width: 400mm;
+        height: 15px;
+        max-width: none;
+    }
+
+    .hiprint_rul_wrapper .v_img {
+        width: 400mm;
+        max-width: none;
+        transform: rotate(90deg);
+        transform-origin: 0 100%;
+        height: 15px;
+        position: absolute;
+        top: -2px;
+        left: 0px;
+    }

@@ -1,4 +1,4 @@
-using BlazorHiprint.DesignPaper.Data;
+using BlazorHiPrint.DesignPaper.Components;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Metadata;

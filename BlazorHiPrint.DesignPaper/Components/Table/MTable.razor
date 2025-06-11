@@ -2,8 +2,8 @@
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inherits MElementBase<MTableTmplt>
 
-<div >
-    <QuickGrid Items="items">
+<div class="grid" style="@($"font-family: {Data.FontFamily}; {(Data.ShowBorder ? "border: 1px solid black" : "")}")">
+    <QuickGrid Items="items" >
         @foreach (var cl in Data.Columns)
         {
             if (cl.Visible)
@@ -18,4 +18,3 @@
 
     </QuickGrid>
 </div>
-

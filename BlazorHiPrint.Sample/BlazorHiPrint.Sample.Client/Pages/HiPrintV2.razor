@@ -1,0 +1,36 @@
+﻿@page "/hiprintv2"
+@using BlazorHiPrint.DesignPaper.Components
+@using BlazorHiPrint.DesignPaper.Components.MEditorForm
+@rendermode InteractiveAuto
+
+<PageTitle>HiPrint V2</PageTitle>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2" style="border: 1px solid #73AD21;">
+            <div class="container ruler-div">
+                <div class="div-box" @ondragend="@HandleDragEnd">
+                    <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.BarCode)">BarCode</div>
+                    <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.Text)">Text</div>
+                    <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.Rectangle)">Rectangle</div>
+                    <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.Line)">Line</div>
+                    <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.Circle)">Circle</div>
+                    <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.Table)">Table</div>
+                    <div draggable="true" @ondragstart="(e)=>HandleDragStart(e,UnitType.Image)">Image</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8" @ondrop="HandleDrop">
+            <MDesignPaper PrintItems="MyPrintItems" OnComponentClicked="PrintItemClicked"></MDesignPaper>
+        </div>
+        <div class="col-sm-2" style="border: 1px solid #73AD21;">
+            @if (SelectedItem != null)
+            {
+                <MEditorForm Model="SelectedItem"></MEditorForm>
+            }
+        </div>
+    </div>
+</div>
+

@@ -17,4 +17,13 @@
     <PackageReference Include="ZXing.Net" Version="0.16.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\images\l_img.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\images\v_img.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

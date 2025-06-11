@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint", "BlazorHiPrint\BlazorHiPrint\BlazorHiPrint.csproj", "{CD361750-B22E-457E-83BD-13C7286DF528}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint.Client", "BlazorHiPrint\BlazorHiPrint.Client\BlazorHiPrint.Client.csproj", "{87147BBC-85C3-4879-BE63-57FD13E64276}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint.DesignPaper", "BlazorHiPrint.DesignPaper\BlazorHiPrint.DesignPaper.csproj", "{2758120A-6523-4304-AE2A-4ADF97B8E87C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint.Sample", "BlazorHiPrint.Sample\BlazorHiPrint.Sample\BlazorHiPrint.Sample.csproj", "{CD56B056-55E0-456C-ABCE-41C9961549B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorHiPrint.Sample.Client", "BlazorHiPrint.Sample\BlazorHiPrint.Sample.Client\BlazorHiPrint.Sample.Client.csproj", "{A502261D-44C5-4909-857B-4F290053A313}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CD361750-B22E-457E-83BD-13C7286DF528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD361750-B22E-457E-83BD-13C7286DF528}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD361750-B22E-457E-83BD-13C7286DF528}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD361750-B22E-457E-83BD-13C7286DF528}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87147BBC-85C3-4879-BE63-57FD13E64276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87147BBC-85C3-4879-BE63-57FD13E64276}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87147BBC-85C3-4879-BE63-57FD13E64276}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87147BBC-85C3-4879-BE63-57FD13E64276}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2758120A-6523-4304-AE2A-4ADF97B8E87C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2758120A-6523-4304-AE2A-4ADF97B8E87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2758120A-6523-4304-AE2A-4ADF97B8E87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2758120A-6523-4304-AE2A-4ADF97B8E87C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD56B056-55E0-456C-ABCE-41C9961549B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD56B056-55E0-456C-ABCE-41C9961549B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD56B056-55E0-456C-ABCE-41C9961549B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD56B056-55E0-456C-ABCE-41C9961549B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A502261D-44C5-4909-857B-4F290053A313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A502261D-44C5-4909-857B-4F290053A313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A502261D-44C5-4909-857B-4F290053A313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A502261D-44C5-4909-857B-4F290053A313}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

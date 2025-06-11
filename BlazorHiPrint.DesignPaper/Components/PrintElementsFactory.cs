@@ -1,11 +1,11 @@
 using BlazorHiPrint.DesignPaper.Components.Rectangle;
-using BlazorHiprint.DesignPaper.Data;
 using BlazorHiPrint.DesignPaper.Components.BarCode;
 using BlazorHiPrint.DesignPaper.Components.Line;
 using BlazorHiPrint.DesignPaper.Components.Circle;
 using BlazorHiPrint.DesignPaper.Components.Image;
 using BlazorHiPrint.DesignPaper.Components.Table;
 using BlazorHiPrint.DesignPaper.Components.Text;
+using BlazorHiPrint.DesignPaper.Components;
 
 namespace BlazorHiprint.DesignPaper.Components;
 

@@ -1,7 +1,6 @@
-using BlazorHiprint.DesignPaper.Data;
 using ZXing;
 
-namespace BlazorHiprint.DesignPaper.Data;
+namespace BlazorHiPrint.DesignPaper.Components.BarCode;
 
 public class MBarCodeTmplt : MComponentTmpltBase
 {

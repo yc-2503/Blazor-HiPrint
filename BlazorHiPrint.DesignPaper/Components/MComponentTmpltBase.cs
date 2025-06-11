@@ -1,6 +1,6 @@
 using BlazorHiprint.DesignPaper.Attributes;
 
-namespace BlazorHiprint.DesignPaper.Data;
+namespace BlazorHiPrint.DesignPaper.Components;
 
 public abstract class MComponentTmpltBase
 {

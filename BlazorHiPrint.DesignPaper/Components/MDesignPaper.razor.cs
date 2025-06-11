@@ -1,5 +1,4 @@
 ﻿using BlazorHiprint.DesignPaper.Components;
-using BlazorHiprint.DesignPaper.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
@@ -9,15 +8,22 @@ namespace BlazorHiPrint.DesignPaper.Components;
 
 public partial class MDesignPaper
 {
-    //组件被点击
+
+    /// <summary>
+    /// 组件被点击时的回调 
+    /// </summary>
     [Parameter]
     public Action<MComponentTmpltBase>? OnComponentClicked { get; set; }
-    //组件被删除
+    /// <summary>
+    /// 组件被删除的回调
+    /// </summary>
     [Parameter]
     public Action<MComponentTmpltBase>? OnComponentDeleted { get; set; }
     //需要显示的组件列表
     IList<MComponentTmpltBase> _printItems = new List<MComponentTmpltBase>();
-
+    /// <summary>
+    /// 需要显示的组件列表
+    /// </summary>
     [Parameter]
     public IList<MComponentTmpltBase> PrintItems
     {

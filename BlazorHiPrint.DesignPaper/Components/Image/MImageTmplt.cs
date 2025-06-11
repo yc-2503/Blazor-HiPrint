@@ -1,6 +1,4 @@
-using BlazorHiprint.DesignPaper.Data;
-
-namespace BlazorHiprint.DesignPaper.Data;
+namespace BlazorHiPrint.DesignPaper.Components.Image;
 
 public class MImageTmplt : MComponentTmpltBase
 {
