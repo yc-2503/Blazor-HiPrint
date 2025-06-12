@@ -2,12 +2,41 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
-
+using Microsoft.JSInterop;
 
 namespace BlazorHiPrint.DesignPaper.Components;
 
 public partial class MDesignPaper
 {
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; } = null!;
+
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "./_content/BlazorHiPrint.DesignPaper/js/printUtils.js");
+        }
+    }
+
+    private async Task ExportToPdf()
+    {
+        if (module != null)
+        {
+            await module.InvokeVoidAsync("exportToPdf", "pw", CurrentPaperSize.Width, CurrentPaperSize.Height);
+        }
+    }
+
+    private async Task PrintContent()
+    {
+        if (module != null)
+        {
+            await module.InvokeVoidAsync("printContent", "pw", CurrentPaperSize.Width, CurrentPaperSize.Height);
+        }
+    }
 
     /// <summary>
     /// 组件被点击时的回调 
@@ -50,11 +79,6 @@ public partial class MDesignPaper
     private (double Width, double Height) CurrentPaperSize => PaperSizes[CurrentPaperSizeKey];
     #endregion
 
-    //bool _shouldRender = false;
-    //protected override bool ShouldRender()
-    //{
-    //    return _shouldRender;
-    //}
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
@@ -126,14 +150,13 @@ public partial class MDesignPaper
         }
     }
 
-
     //记录拖拽开始时的位置，用来计算移动的相对位置
     private void TempWindDragStart(DragEventArgs args)
     {
         dragStartTop = args.ClientY;
         dragStartLeft = args.ClientX;
-
     }
+    
     private void TempWindDrag(DragEventArgs args)
     {
         if (SelectedItem != null)
@@ -148,34 +171,26 @@ public partial class MDesignPaper
             {
                 return;
             }
-            // 鼠标移动如果没有超过 MDragItem 的范围，offsetX Y 的值会是 MDragItem 内部的相对位置，移动会有问题，
-            // 这里是要获取鼠标移动的相对距离
             SelectedItem.Top += dy;
             SelectedItem.Left += dx;
-            //SelectedItem.MoveTo(SelectedItem.Left+dx,SelectedItem.Top+dy);
-
             dragStartLeft = args.ClientX;
             dragStartTop = args.ClientY;
         }
     }
 }
+
 class MRenderElements
 {
     public MRenderElements(MComponentTmpltBase mcmpntConfig)
     {
         MCmpntConfig = mcmpntConfig;
         Fragment =  (cfg)=> (RenderTreeBuilder __builder) => {
-
             __builder.OpenComponent(1,PrintElementsFactory.GetPrintElementType(cfg));
             __builder.AddComponentParameter(2, "Data", cfg);
             __builder.CloseComponent();
-
         };
     }
     public string ID { get { return MCmpntConfig.ID; } }
     public MComponentTmpltBase MCmpntConfig { get; init; }
     public RenderFragment<MComponentTmpltBase>Fragment { get; init; }
-
-
-
 }
