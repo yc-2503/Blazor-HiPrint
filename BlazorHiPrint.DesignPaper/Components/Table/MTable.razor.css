@@ -1,36 +1,12 @@
-/* Fix height and enable scrolling */
-.grid {
-    --table-border: none;
+.table-border {
+    border: 1px solid #ddd;
 }
 
-.grid[style*="border: 1px solid black"] {
-    --table-border: 1px solid black;
-}
-
-/* Table borders */
-::deep table {
-    border-collapse: collapse;
-    width: 100%;
-    border: var(--table-border);
-}
-
-::deep th, ::deep td {
-    border: var(--table-border);
+.table-border th, .table-border td {
+    border: 1px solid #ddd;
     padding: 8px;
-    text-align: left;
 }
 
-/* Sticky header while scrolling */
-::deep thead {
-    position: sticky;
-    top: 0;
-    background-color: #eee;
+.table-no-border th, .table-no-border td {
+    padding: 8px;
 }
-
-/* Stripe effect */
-::deep tbody tr {
-    background-color: rgba(0,0,0,0.04);
-}
-::deep tbody tr:nth-child(even) {
-    background: rgba(255,255,255,0.4);
- }

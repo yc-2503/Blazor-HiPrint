@@ -1,20 +1,32 @@
 @using BlazorHiprint.DesignPaper.Components
-@using Microsoft.AspNetCore.Components.QuickGrid
 @inherits MElementBase<MTableTmplt>
 
-<div class="grid" style="@($"font-family: {Data.FontFamily}; {(Data.ShowBorder ? "border: 1px solid black" : "")}")">
-    <QuickGrid Items="items" >
-        @foreach (var cl in Data.Columns)
-        {
-            if (cl.Visible)
+<div class="grid @(Data.ShowBorder ? "table-border" : "table-no-border")" style="@($"font-family: {Data.FontFamily};")">
+    <table style="width:100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                @foreach (var cl in Data.Columns)
+                {
+                    if (cl.Visible)
+                    {
+                        <th>@cl.DisplayName</th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items)
             {
-                <PropertyColumn Property="@(p => GetValue(p,cl.PropertyName))" Title="@(cl.DisplayName)" Sortable="true" >
-                    <HeaderTemplate>
-                        <div @onclick="() => ColumnClick(cl.PropertyName)">@context.Title</div>
-                    </HeaderTemplate>
-                </PropertyColumn>
+                <tr>
+                    @foreach (var cl in Data.Columns)
+                    {
+                        if (cl.Visible)
+                        {
+                            <td>@GetValue(item, cl.PropertyName)</td>
+                        }
+                    }
+                </tr>
             }
-        }
-
-    </QuickGrid>
+        </tbody>
+    </table>
 </div>
