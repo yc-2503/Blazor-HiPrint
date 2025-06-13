@@ -2,6 +2,10 @@ namespace BlazorHiPrint.DesignPaper.Components.Rectangle;
 
 public class MRectangleTmplt : MComponentTmpltBase
 {
+    public MRectangleTmplt(double top, double left, Action<string, object?>? fieldHasChanged)
+    : base(top, left, fieldHasChanged, UnitType.Rectangle)
+    {
+    }
     private double _width = 100;
     public double Width {
         get => _width;
@@ -57,8 +61,5 @@ public class MRectangleTmplt : MComponentTmpltBase
         }
     }
 
-    public MRectangleTmplt(double top, double left, Action<string, object?>? fieldHasChanged) 
-        : base(top, left, fieldHasChanged, UnitType.Rectangle)
-    {
-    }
+
 }

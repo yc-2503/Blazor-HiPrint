@@ -1,19 +1,23 @@
 ﻿@using BlazorHiprint.DesignPaper.Components
 
-<div class="paper-size-controls mb-3">
-    <select class="form-select" @bind="CurrentPaperSizeKey">
-        <option value="A3">A3 (297 × 420mm)</option>
-        <option value="A4">A4 (210 × 297mm)</option>
-        <option value="A5">A5 (148 × 210mm)</option>
-        <option value="B3">B3 (353 × 500mm)</option>
-        <option value="B4">B4 (250 × 353mm)</option>
-        <option value="B5">B5 (176 × 250mm)</option>
-    </select>
-</div>
-
-<div class="export-controls mb-3">
-    <button class="btn btn-primary me-2" @onclick="ExportToPdf">导出PDF</button>
-    <button class="btn btn-secondary" @onclick="PrintContent">打印</button>
+<div class="d-flex align-items-center gap-3 mb-3">
+    @if (ShowButtons)
+    {
+        <div >
+            <button class="btn btn-primary me-2" @onclick="ExportToPdf">导出PDF</button>
+            <button class="btn btn-secondary" @onclick="PrintContent">打印</button>
+        </div>
+    }
+    <div >
+        <select class="form-select" @bind="CurrentPaperSizeKey">
+            <option value="A3">A3 (297 × 420mm)</option>
+            <option value="A4">A4 (210 × 297mm)</option>
+            <option value="A5">A5 (148 × 210mm)</option>
+            <option value="B3">B3 (353 × 500mm)</option>
+            <option value="B4">B4 (250 × 353mm)</option>
+            <option value="B5">B5 (176 × 250mm)</option>
+        </select>
+    </div>
 </div>
 <div class="card border-0">
     <div class="card-body" style="overflow-x:scroll">

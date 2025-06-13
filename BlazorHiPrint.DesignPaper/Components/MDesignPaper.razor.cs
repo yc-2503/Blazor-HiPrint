@@ -8,36 +8,7 @@ namespace BlazorHiPrint.DesignPaper.Components;
 
 public partial class MDesignPaper
 {
-    [Inject]
-    private IJSRuntime JSRuntime { get; set; } = null!;
-
-    private IJSObjectReference? module;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            module = await JSRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/BlazorHiPrint.DesignPaper/js/printUtils.js");
-        }
-    }
-
-    private async Task ExportToPdf()
-    {
-        if (module != null)
-        {
-            await module.InvokeVoidAsync("exportToPdf", "pw", CurrentPaperSize.Width, CurrentPaperSize.Height);
-        }
-    }
-
-    private async Task PrintContent()
-    {
-        if (module != null)
-        {
-            await module.InvokeVoidAsync("printContent", "pw", CurrentPaperSize.Width, CurrentPaperSize.Height);
-        }
-    }
-
+    [Parameter] public bool ShowButtons { get; set; } = false;
     /// <summary>
     /// 组件被点击时的回调 
     /// </summary>
@@ -64,6 +35,23 @@ public partial class MDesignPaper
     /// </summary>
     [Parameter]
     public MComponentTmpltBase? SelectedItem { get; set; }
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; } = null!;
+
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "./_content/BlazorHiPrint.DesignPaper/js/printUtils.js");
+        }
+    }
+
+
+
+
     #region 页面尺寸
     private Dictionary<string, (double Width, double Height)> PaperSizes = new()
     {
@@ -175,6 +163,21 @@ public partial class MDesignPaper
             SelectedItem.Left += dx;
             dragStartLeft = args.ClientX;
             dragStartTop = args.ClientY;
+        }
+    }
+    private async Task ExportToPdf()
+    {
+        if (module != null)
+        {
+            await module.InvokeVoidAsync("exportToPdf", "pw", CurrentPaperSize.Width, CurrentPaperSize.Height);
+        }
+    }
+
+    private async Task PrintContent()
+    {
+        if (module != null)
+        {
+            await module.InvokeVoidAsync("printContent", "pw", CurrentPaperSize.Width, CurrentPaperSize.Height);
         }
     }
 }
