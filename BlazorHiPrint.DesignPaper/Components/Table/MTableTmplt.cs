@@ -1,5 +1,6 @@
 using BlazorHiprint.DesignPaper.Attributes;
 using BlazorHiPrint.DesignPaper.Components;
+using BlazorHiPrint.DesignPaper.Data;
 using System.Reflection;
 
 public class MTableTmplt : MComponentTmpltBase
@@ -25,11 +26,11 @@ public class MTableTmplt : MComponentTmpltBase
         }
     }
     
-    private string _fontFamily = "Arial";
+    private FontFamilyType _fontFamily = FontFamilyType.Arial;
     /// <summary>
     /// 获取或设置表格字体
-    /// </summary>
-    public string FontFamily
+    /// </summary>    
+    public FontFamilyType FontFamily
     {
         get { return _fontFamily; }
         set

@@ -2,10 +2,8 @@
 @inherits MElementBase<MTextTmplt>
 
 
-<div style="font-size:@(Data.FontSize)px; font-family:@Data.FontFamily; 
-font-weight:@Data.FontWeight; color:@Data.Color; 
+<div style="font-size:@(Data.FontSize)px; font-family:@Data.FontFamilyName; 
+font-weight:@Data.FontWeight; color:@Data.TextColor; 
 text-align:@Data.TextAlign; @(Data.IsItalic ? "font-style:italic;" : "") @(Data.IsUnderline ? "text-decoration:underline;" : "")">
     @Data?.Text
 </div>
-
-

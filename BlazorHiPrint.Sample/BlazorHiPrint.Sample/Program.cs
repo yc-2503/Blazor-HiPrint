@@ -1,4 +1,3 @@
-using BlazorHiPrint.Sample.Client.Pages;
 using BlazorHiPrint.Sample.Components;
 
 var builder = WebApplication.CreateBuilder(args);

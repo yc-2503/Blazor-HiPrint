@@ -1,5 +1,6 @@
 ﻿@page "/"
-@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@* @rendermode @(new InteractiveServerRenderMode(prerender: false)) *@
+@rendermode InteractiveServer
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 <PageTitle>Home</PageTitle>
@@ -7,28 +8,3 @@
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
-
-
-<h1>Counter</h1>
-
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
-
-<button @onclick="CallJavaScript">Call JavaScript</button>
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-@code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
-
-    private async Task CallJavaScript()
-    {
-        await JSRuntime.InvokeVoidAsync("showAlert", "Hello from Blazor!");
-    }
-}

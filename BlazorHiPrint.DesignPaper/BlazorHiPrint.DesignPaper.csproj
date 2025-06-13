@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="9.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.5" />
     <PackageReference Include="ZXing.Net" Version="0.16.10" />
   </ItemGroup>

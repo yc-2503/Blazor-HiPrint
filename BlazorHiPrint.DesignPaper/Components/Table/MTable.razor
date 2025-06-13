@@ -1,7 +1,7 @@
 @using BlazorHiprint.DesignPaper.Components
 @inherits MElementBase<MTableTmplt>
 
-<div class="grid @(Data.ShowBorder ? "table-border" : "table-no-border")" style="@($"font-family: {Data.FontFamily};")">
+<div class="grid @(Data.ShowBorder ? "table-border" : "table-no-border")" style="@($"font-family: {Data.FontFamily.ToString()};")">
     <table style="width:100%; border-collapse: collapse;">
         <thead>
             <tr>
