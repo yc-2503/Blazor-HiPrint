@@ -14,8 +14,9 @@ public partial class HiPrintV2
 
 
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
+        base.OnParametersSet();
         InitDemo();
     }
 

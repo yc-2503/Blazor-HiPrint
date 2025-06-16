@@ -5,34 +5,29 @@
 @inherits MElementBase<MBarCodeTmplt>
 
 <div>
-    <a href="@(Clickable ? Data : null)" target="@Target">
+    @if (content != null)
+    {
 
-        @if (content != null)
-        {
-            var viewBoxWidth = @content.ModuleSizeX * content.Columns;
-            var viewBoxHeight = @content.ModuleSizeY * content.Rows;
-
-            <svg width="@Width" height="@Height" viewBox="0 0 @viewBoxWidth @viewBoxHeight">
-                @for (int y = 0; y < content.Rows; y++)
+        <svg width="@(Data.Width)px" height="@(Data.Height)px">
+            @for (int y = 0; y < content.Rows; y++)
+            {
+                @for (int x = 0; x < content.Columns; x++)
                 {
-                    @for (int x = 0; x < content.Columns; x++)
+                    @if (content[x, y])
                     {
-                        @if (content[x, y])
-                        {
-                            <rect class="d-flex align-center justify-center" width="@content.ModuleSizeX"
-                                  height="@content.ModuleSizeY" style="@($"fill:{Color}; stroke-width:{StrokeWidth}px; stroke:{Color}")"
-                                  x="@(x * content.ModuleSizeX)"
-                                  y="@(y * content.ModuleSizeY)" />
-                        }
+                        <rect class="d-flex align-center justify-center" width="@content.ModuleSizeX"
+                              height="@content.ModuleSizeY" style="@($"fill:{Color}; stroke-width:{StrokeWidth}px; stroke:{Color}")"
+                              x="@(x* content.ModuleSizeX)"
+                              y="@(y* content.ModuleSizeY)" />
                     }
                 }
-            </svg>
-        }
-
-    </a>
+            }
+        </svg>
+    }
 </div>
 
 @code {
+    private double _width;
     private string? _value;
     BarcodeResult? content;
     protected override void OnParametersSet()
@@ -51,13 +46,18 @@
                 render = true;
                 _format = Data.Format;
             }
+            if (_width != Data.Width)
+            {
+                render = true;
+                _width = Data.Width;
+            }
             if (render)
             {
                 if (_format == ZXing.BarcodeFormat.CODE_128 || _format == ZXing.BarcodeFormat.CODE_93 || _format == ZXing.BarcodeFormat.CODE_39)
                 {
                     //TODO 临时强制高度为50
-                    Height = 50;
-                    ForceHeight = Height;
+                    Data.Height = 50;
+                    ForceHeight = (int)Data.Height;
                 }
                 else
                 {

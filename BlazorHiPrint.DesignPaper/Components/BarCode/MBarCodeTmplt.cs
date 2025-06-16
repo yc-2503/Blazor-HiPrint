@@ -7,11 +7,37 @@ public class MBarCodeTmplt : MComponentTmpltBase
     public MBarCodeTmplt(double top, double left, Action<string, object?>? fieldHasChanged)
     : base(top, left, fieldHasChanged, UnitType.BarCode)
     {
+        Console.WriteLine("1");
     }
-    string? _text  = "BARCODE";
-    public int Width { get; set; } = 100;
-    public int Height { get; set; } = 50;
+    private double _width = 100;
+    public double Width
+    {
+        get => _width;
+        set
+        {
+            if (_width != value)
+            {
+                _width = value;
+                FieldHasChanged?.Invoke(nameof(Width), value);
+            }
+        }
+    }
+
+    private double _height = 100;
+    public double Height
+    {
+        get => _height;
+        set
+        {
+            if (_height != value)
+            {
+                _height = value;
+                FieldHasChanged?.Invoke(nameof(Height), value);
+            }
+        }
+    }
     private BarcodeFormat _format = BarcodeFormat.CODE_128;
+    string? _text  = "BARCODE";
     public string Text
     {
         get { return _text; }

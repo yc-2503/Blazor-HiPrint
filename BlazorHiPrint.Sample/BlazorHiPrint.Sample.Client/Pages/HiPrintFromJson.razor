@@ -1,5 +1,11 @@
-﻿<h3>HiPrintFromJson</h3>
-
+﻿@page "/hiprintfromjson"
+@using BlazorHiPrint.DesignPaper.Components
+@using BlazorHiPrint.DesignPaper.Components.MEditorForm
+@rendermode InteractiveAuto
+<h3>HiPrintFromJson</h3>
+        <div >
+            <MDesignPaper PrintItems="MyPrintItems" ShowButtons="false" ></MDesignPaper>
+        </div>
 @code {
 
 }

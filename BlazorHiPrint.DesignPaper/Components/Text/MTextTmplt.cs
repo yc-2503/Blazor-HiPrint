@@ -7,6 +7,16 @@ namespace BlazorHiPrint.DesignPaper.Components.Text;
 /// </summary>
 public class MTextTmplt : MComponentTmpltBase
 {
+    /// <summary>
+    /// 初始化文本组件模板
+    /// </summary>
+    /// <param name="top">顶部位置</param>
+    /// <param name="left">左侧位置</param>
+    /// <param name="fieldHasChanged">属性变更回调</param>
+    public MTextTmplt(double top, double left, Action<string, object?>? fieldHasChanged)
+        : base(top, left, fieldHasChanged, UnitType.Text)
+    {
+    }
     private string? _text = "Text";
     /// <summary>
     /// 获取或设置文本内容
@@ -166,14 +176,5 @@ public class MTextTmplt : MComponentTmpltBase
         }
     }
 
-    /// <summary>
-    /// 初始化文本组件模板
-    /// </summary>
-    /// <param name="top">顶部位置</param>
-    /// <param name="left">左侧位置</param>
-    /// <param name="fieldHasChanged">属性变更回调</param>
-    public MTextTmplt(double top, double left, Action<string, object?>? fieldHasChanged)
-        : base(top, left, fieldHasChanged, UnitType.Text)
-    {
-    }
+
 }

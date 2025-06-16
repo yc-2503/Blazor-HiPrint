@@ -20,14 +20,10 @@ public partial class MBarCode
     public string? OuterStyle { get; set; }
     [Parameter]
     public string? EmptySrc { get; set; }
-    [Parameter]
-    public bool Clickable { get; set; }
+
     [Parameter]
     public string? ErrorText { get; set; }
-    [Parameter]
-    public int Height { get; set; } = 200;
-    [Parameter]
-    public int Width { get; set; } = 200;
+
     /// <summary>
     /// Use this value on not square sized barcode formats like UPC_A and UPC_E.
     /// </summary>
@@ -82,8 +78,12 @@ public partial class MBarCode
         try
         {
             var matrix = Encoder.encode(value, _format, 0, 0);
-
-            var result = new BarcodeResult(matrix, 1, ForceHeight);
+            int sizeX = (int)(Data.Width / matrix.Width);
+            if(sizeX == 0)
+            {
+                sizeX = 1;
+            }
+            var result = new BarcodeResult(matrix, sizeX, ForceHeight);
             ErrorText = null;
             return result;
         }
