@@ -51,7 +51,9 @@ public partial class HiPrintFromJson
                 "Top": 160,
                 "Left": 10,
                 "Width": 100,
-                "Height": 20
+                "Height": 20,
+                "UnitType":"Rectangle"
+            
             }
             """;
         var m4 = System.Text.Json.JsonSerializer.Deserialize<MRectangleTmplt>(rectJson, options);
@@ -62,7 +64,8 @@ public partial class HiPrintFromJson
                 "Top": 180,
                 "Left": 30,
                 "X2": 100,
-                "Y2": 180
+                "Y2": 180,
+                "UnitType":"Line"
             }
             """;
         var m5 = System.Text.Json.JsonSerializer.Deserialize<MLineTmplt>(lineJson, options);
@@ -72,7 +75,8 @@ public partial class HiPrintFromJson
             {
                 "Top": 100,
                 "Left": 40,
-                "TModel": "BlazorHiPrint.Sample.Client.Pages.Person, BlazorHiPrint.Sample.Client"
+                "TModel": "BlazorHiPrint.Sample.Client.Pages.Person, BlazorHiPrint.Sample.Client",
+                "UnitType":"Table"
             }
             """;
         var m6 = System.Text.Json.JsonSerializer.Deserialize<MTableTmplt>(tableJson, options);

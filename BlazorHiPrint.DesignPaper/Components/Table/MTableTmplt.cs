@@ -5,6 +5,10 @@ using System.Reflection;
 
 public class MTableTmplt : MComponentTmpltBase
 {
+    public MTableTmplt(double top, double left, Action<string, object?>? fieldHasChanged)
+    : base(top, left, fieldHasChanged, UnitType.Table)
+    {
+    }
     public int RowHeight { get; set; } = 30;
     public int ColumnWidth { get; set; } = 100;
     
@@ -44,10 +48,7 @@ public class MTableTmplt : MComponentTmpltBase
         }
     }
 
-    public MTableTmplt(double top, double left, Action<string, object?>? fieldHasChanged)
-        : base(top, left, fieldHasChanged, UnitType.Table)
-    {
-    }
+
     private Type? _tmodel; // 表格数据模型类型
     private IEnumerable<object> _items = new List<object>(); // 表格数据项集合
     private IEnumerable<MTableColumn> _columns = new[] { new MTableColumn("A"), new MTableColumn("B"), new MTableColumn("C") }; // 表格列定义集合

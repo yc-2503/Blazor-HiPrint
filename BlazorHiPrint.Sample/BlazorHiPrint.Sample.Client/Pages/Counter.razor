@@ -12,7 +12,17 @@
 
 <button @onclick="CallJavaScript">Call JavaScript</button>
 <h1>Hello, world!</h1>
-
+<div class="container">
+    <h3>Tabs</h3>
+    <ul class="nav nav-tabs">
+        <li class="active"><a >首页</a></li>
+        <li><a href="#">菜单 1</a></li>
+        <li><a href="#">菜单 2</a></li>
+        <li><a href="#">菜单 3</a></li>
+    </ul>
+    <br>
+    <p><strong>Note:</strong> 此示例演示如何创建基本导航选项卡。它还不是可切换/动态的（你不能点击链接来显示不同的内容）-请参阅 Bootstrap 选项卡 教程中的最后一个实例，以了解如何做到这一点。</p>
+</div>
 Welcome to your new app.
 @code {
     private int currentCount = 0;
