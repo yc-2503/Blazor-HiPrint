@@ -8,7 +8,7 @@
             <button class="btn btn-secondary" @onclick="PrintContent">打印</button>
         </div>
     }
-    <div >
+    <div class="d-flex align-items-center gap-2">
         <select class="form-select" @bind="CurrentPaperSizeKey">
             <option value="A3">A3 (297 × 420mm)</option>
             <option value="A4">A4 (210 × 297mm)</option>
@@ -16,7 +16,21 @@
             <option value="B3">B3 (353 × 500mm)</option>
             <option value="B4">B4 (250 × 353mm)</option>
             <option value="B5">B5 (176 × 250mm)</option>
+            <option value="Custom">Custom</option>
         </select>
+        
+        @if (CurrentPaperSizeKey == "Custom")
+        {
+            <div class="d-flex gap-2">
+                <input type="number" class="form-control" style="width: 100px" 
+                       @bind="CustomWidth" min="1" max="420" 
+                       placeholder="Width (mm)" />
+                <span>×</span>
+                <input type="number" class="form-control" style="width: 100px" 
+                       @bind="CustomHeight" min="1" max="297" 
+                       placeholder="Height (mm)" />
+            </div>
+        }
     </div>
 </div>
 <div class="card border-0">

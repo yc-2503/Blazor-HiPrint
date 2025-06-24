@@ -60,11 +60,15 @@ public partial class MDesignPaper
         ["A5"] = (210, 148),
         ["B3"] = (500, 353),
         ["B4"] = (353, 250),
-        ["B5"] = (250, 176)
+        ["B5"] = (250, 176),
+        ["Custom"] = (0, 0)
     };
 
     private string CurrentPaperSizeKey { get; set; } = "A3";
-    private (double Width, double Height) CurrentPaperSize => PaperSizes[CurrentPaperSizeKey];
+    private double CustomWidth { get; set; } = 210;
+    private double CustomHeight { get; set; } = 297;
+    private (double Width, double Height) CurrentPaperSize => 
+        CurrentPaperSizeKey == "Custom" ? (CustomWidth, CustomHeight) : PaperSizes[CurrentPaperSizeKey];
     #endregion
 
     protected override void OnParametersSet()
@@ -175,9 +179,26 @@ public partial class MDesignPaper
 
     private async Task PrintContent()
     {
-        if (module != null)
-        {
-            await module.InvokeVoidAsync("printContent", "pw", CurrentPaperSize.Width, CurrentPaperSize.Height);
+        if (module == null) return;
+
+        try {
+            // First check if HTTP endpoint is available using JS
+            var isServiceAvailable = await module.InvokeAsync<bool>("isPrintServiceAvailable");
+            if (isServiceAvailable) {
+                // Generate PDF and send in one call
+                var success = await module.InvokeAsync<bool>("generateAndSendPdf", "pw", CurrentPaperSize.Width, CurrentPaperSize.Height, "design.pdf");
+                
+                if (!success) {
+                    await JSRuntime.InvokeVoidAsync("alert", "Failed to send PDF to printer service");
+                }
+            } else {
+                // Fallback to direct printing if service not available
+                await JSRuntime.InvokeVoidAsync("alert", "Printer service not available - printing directly instead");
+            }
+        }
+        catch {
+            // Fallback to direct printing if any error occurs
+            await JSRuntime.InvokeVoidAsync("alert", "Error checking printer service - printing directly instead");
         }
     }
 }

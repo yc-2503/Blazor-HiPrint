@@ -28,73 +28,104 @@
         /// </summary>
         private void InitializeComponent()
         {
-            lstPrinter = new ListBox();
-            lblDefault = new Label();
-            printDocument1 = new System.Drawing.Printing.PrintDocument();
-            label1 = new Label();
-            groupBox1 = new GroupBox();
-            groupBox1.SuspendLayout();
+            statusStrip1 = new StatusStrip();
+            toolStripStatusLabel1 = new ToolStripStatusLabel();
+            tslPrinter = new ToolStripStatusLabel();
+            dgvFiles = new DataGridView();
+            Column2 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            Column1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvFiles).BeginInit();
             SuspendLayout();
             // 
-            // lstPrinter
+            // statusStrip1
             // 
-            lstPrinter.Dock = DockStyle.Fill;
-            lstPrinter.FormattingEnabled = true;
-            lstPrinter.Location = new Point(3, 19);
-            lstPrinter.Name = "lstPrinter";
-            lstPrinter.Size = new Size(358, 133);
-            lstPrinter.TabIndex = 0;
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, tslPrinter });
+            statusStrip1.Location = new Point(0, 428);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(800, 22);
+            statusStrip1.TabIndex = 4;
+            statusStrip1.Text = "statusStrip1";
             // 
-            // lblDefault
+            // toolStripStatusLabel1
             // 
-            lblDefault.AutoSize = true;
-            lblDefault.Location = new Point(100, 184);
-            lblDefault.Name = "lblDefault";
-            lblDefault.Size = new Size(43, 17);
-            lblDefault.TabIndex = 1;
-            lblDefault.Text = "label1";
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new Size(80, 17);
+            toolStripStatusLabel1.Text = "默认打印机：";
             // 
-            // label1
+            // tslPrinter
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(15, 184);
-            label1.Name = "label1";
-            label1.Size = new Size(80, 17);
-            label1.TabIndex = 2;
-            label1.Text = "默认打印机：";
+            tslPrinter.Name = "tslPrinter";
+            tslPrinter.Size = new Size(59, 17);
+            tslPrinter.Text = "tslPrinter";
             // 
-            // groupBox1
+            // dgvFiles
             // 
-            groupBox1.Controls.Add(lstPrinter);
-            groupBox1.Location = new Point(12, 12);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(364, 155);
-            groupBox1.TabIndex = 3;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "打印机列表";
+            dgvFiles.AllowUserToAddRows = false;
+            dgvFiles.AllowUserToDeleteRows = false;
+            dgvFiles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvFiles.Columns.AddRange(new DataGridViewColumn[] { Column2, dataGridViewTextBoxColumn1, Column1, dataGridViewTextBoxColumn2 });
+            dgvFiles.Dock = DockStyle.Fill;
+            dgvFiles.Location = new Point(0, 0);
+            dgvFiles.Name = "dgvFiles";
+            dgvFiles.ReadOnly = true;
+            dgvFiles.Size = new Size(800, 428);
+            dgvFiles.TabIndex = 0;
+            // 
+            // Column2
+            // 
+            Column2.HeaderText = "任务ID";
+            Column2.Name = "Column2";
+            Column2.ReadOnly = true;
+            Column2.Width = 200;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.HeaderText = "文件名";
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            dataGridViewTextBoxColumn1.Width = 200;
+            // 
+            // Column1
+            // 
+            Column1.HeaderText = "创建时间";
+            Column1.Name = "Column1";
+            Column1.ReadOnly = true;
+            Column1.Width = 150;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            dataGridViewTextBoxColumn2.HeaderText = "状态";
+            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(groupBox1);
-            Controls.Add(label1);
-            Controls.Add(lblDefault);
+            Controls.Add(dgvFiles);
+            Controls.Add(statusStrip1);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
-            groupBox1.ResumeLayout(false);
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvFiles).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private ListBox lstPrinter;
-        private Label lblDefault;
-        private System.Drawing.Printing.PrintDocument printDocument1;
-        private Label label1;
-        private GroupBox groupBox1;
+        private DataGridView dgvFiles;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolStripStatusLabel tslPrinter;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn Column1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
     }
 }
